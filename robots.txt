@@ -1,0 +1,3 @@
+# pollakovci.live — private family page, keep out of search engines
+User-agent: *
+Disallow: /
