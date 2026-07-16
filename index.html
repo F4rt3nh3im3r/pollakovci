@@ -3,10 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gdynia a Trojmestie — rodinný sprievodca · 25. jún – 2. júl 2026</title>
+<title>Gdansk a Trojmestie — sprievodca pre dvoch · 19.–24. júl 2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <style>
   :root{
     --baltic:#0a4d68;
@@ -49,35 +50,43 @@
 
   /* Header */
   header.hero{
-    background:linear-gradient(150deg,var(--baltic) 0%,var(--sea) 55%,var(--teal) 100%);
-    background-size:200% 200%;
-    animation:gradientShift 16s ease infinite;
-    color:#fff;
-    padding:60px 22px 90px;
-    text-align:center;
     position:relative;
+    background:linear-gradient(150deg,var(--baltic) 0%,var(--sea) 58%,var(--teal) 100%);
+    color:#fff;
+    padding:78px 22px 96px;
+    text-align:center;
     overflow:hidden;
   }
-  @keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+  header.hero .hero-photo{
+    position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 62%;
+    opacity:.40;z-index:0;transform:scale(1.03);animation:heroZoom 30s ease-in-out infinite alternate;
+  }
+  @keyframes heroZoom{0%{transform:scale(1.03)}100%{transform:scale(1.12)}}
+  header.hero .hero-shade{
+    position:absolute;inset:0;z-index:1;
+    background:linear-gradient(160deg,rgba(6,58,80,.86) 0%,rgba(10,77,104,.55) 45%,rgba(46,155,181,.62) 100%);
+  }
   header.hero .sun{
-    position:absolute;top:34px;right:8%;width:64px;height:64px;border-radius:50%;
-    background:radial-gradient(circle,#ffe39a 0%,#ffcf5e 60%,rgba(255,207,94,0) 72%);
-    animation:floaty 7s ease-in-out infinite;opacity:.9;
+    position:absolute;top:40px;right:9%;width:70px;height:70px;border-radius:50%;z-index:2;
+    background:radial-gradient(circle,#ffe39a 0%,#ffcf5e 58%,rgba(255,207,94,0) 74%);
+    animation:floaty 7s ease-in-out infinite;opacity:.85;
   }
   @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
   header.hero .kicker{
     text-transform:uppercase;letter-spacing:3px;font-size:13px;
-    font-weight:600;opacity:.9;margin:0 0 10px;position:relative;z-index:2;
+    font-weight:600;opacity:.92;margin:0 0 12px;position:relative;z-index:3;
   }
   header.hero h1{
-    font-size:2.6rem;line-height:1.1;margin:0 0 12px;font-weight:800;position:relative;z-index:2;
-    text-shadow:0 2px 18px rgba(0,0,0,.15);
+    font-size:2.7rem;line-height:1.08;margin:0 0 14px;font-weight:800;position:relative;z-index:3;
+    text-shadow:0 2px 22px rgba(0,0,0,.28);
   }
-  header.hero p.dates{font-size:1.15rem;margin:0 auto;max-width:640px;opacity:.96;position:relative;z-index:2;}
-  .crew{margin-top:18px;font-size:.95rem;opacity:.92;position:relative;z-index:2;}
+  header.hero p.dates{font-size:1.15rem;margin:0 auto;max-width:640px;opacity:.97;position:relative;z-index:3;
+    text-shadow:0 1px 10px rgba(0,0,0,.28);}
+  .crew{margin-top:18px;font-size:.95rem;opacity:.94;position:relative;z-index:3;
+    text-shadow:0 1px 8px rgba(0,0,0,.3);}
 
   /* Animated waves */
-  .waves{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:80px;z-index:1;}
+  .waves{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:80px;z-index:2;}
   .waves svg{width:100%;height:100%;}
   .waves use{animation:waveMove 26s cubic-bezier(.55,.5,.45,.5) infinite;}
   .waves use:nth-child(1){animation-delay:-2s;animation-duration:10s;}
@@ -123,6 +132,20 @@
   .meta{font-size:.9rem;color:var(--muted);margin:6px 0 0;}
   .meta strong{color:var(--ink);}
 
+  /* Card photos */
+  .cardimg{margin:-20px -22px 16px;height:230px;overflow:hidden;border-radius:14px 14px 0 0;
+    background:linear-gradient(135deg,#dbeaf0,#eef6f8);}
+  .cardimg img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .7s ease;}
+  .card:hover .cardimg img{transform:scale(1.06);}
+  .card.star .cardimg{margin-left:-27px;}
+
+  /* Standalone figure */
+  figure.photo{margin:16px 0;border-radius:16px;overflow:hidden;border:1px solid var(--line);
+    box-shadow:0 10px 26px rgba(10,77,104,.12);background:linear-gradient(135deg,#dbeaf0,#eef6f8);}
+  figure.photo img{display:block;width:100%;height:auto;transition:transform .8s ease;}
+  figure.photo:hover img{transform:scale(1.03);}
+  figure.photo figcaption{font-size:.82rem;color:var(--muted);padding:9px 14px;background:var(--paper);}
+
   /* Callout */
   .callout{border-radius:14px;padding:20px 22px;margin:18px 0;border-left:6px solid;}
   .callout.headline{background:#fff5e0;border-color:var(--amber);}
@@ -154,7 +177,7 @@
   td .closed{color:var(--warn);font-weight:700;}
 
   /* Day strip */
-  .days{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:16px 0;}
+  .days{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:16px 0;}
   .day{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center;transition:transform .2s,box-shadow .2s;}
   .day:hover{transform:translateY(-4px);box-shadow:0 10px 20px rgba(10,77,104,.12);}
   .day .d{font-weight:800;color:var(--baltic);font-size:1.05rem;}
@@ -178,10 +201,11 @@
     animation:gradientShift 14s ease infinite;color:#fff;border-radius:16px;padding:26px 28px;margin-top:36px;
     box-shadow:0 12px 30px rgba(10,77,104,.22);
   }
+  @keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
   .next h2{color:#fff;margin:0 0 8px;font-size:1.45rem;}
   .next p{margin:0;opacity:.96;}
 
-  @media (max-width:560px){header.hero h1{font-size:2rem;}body{font-size:16px;}header.hero .sun{width:48px;height:48px;}}
+  @media (max-width:560px){header.hero h1{font-size:2.05rem;}body{font-size:16px;}header.hero .sun{width:52px;height:52px;}.cardimg{height:190px;}}
 
   /* ===== Tabs ===== */
   [hidden]{display:none !important;}
@@ -243,7 +267,9 @@
     body{background:#fff;font-size:12px;}
     .card,nav.toc{box-shadow:none;}
     .progress,.totop,.waves,.sun{display:none!important;}
-    header.hero{color:#000;background:#fff;border-bottom:3px solid var(--baltic);animation:none;padding-bottom:24px;}
+    header.hero{color:#000;background:#fff;border-bottom:3px solid var(--baltic);padding-bottom:24px;}
+    header.hero .hero-photo,header.hero .hero-shade{display:none!important;}
+    header.hero .kicker,header.hero h1,header.hero p.dates,.crew{color:#000;text-shadow:none;}
     .next{background:#fff;color:#000;border:2px solid var(--baltic);animation:none;}
     .next h2{color:var(--baltic);}
     a{color:#000;}
@@ -268,18 +294,40 @@
   @media (min-width:760px){ .ghost{animation:drift 32s ease-in-out infinite;} }
   @keyframes drift{0%,100%{transform:translateX(0)}50%{transform:translateX(3.5%)}}
 
-  /* ===== Passing planes (hero) ===== */
-  .planes{position:absolute;inset:0;z-index:1;overflow:hidden;pointer-events:none;}
-  .plane{position:absolute;left:0;color:#fff;width:118px;will-change:transform;}
-  .plane svg{display:block;width:100%;height:auto;fill:currentColor;}
-  .plane.p1{top:20%;opacity:.16;animation:fly1 21s linear infinite;}
-  .plane.p2{top:62%;width:74px;opacity:.10;animation:fly2 31s linear infinite;animation-delay:7s;}
-  @keyframes fly1{0%{transform:translateX(-200px)}100%{transform:translateX(calc(100vw + 200px))}}
-  @keyframes fly2{0%{transform:translateX(-160px)}100%{transform:translateX(calc(100vw + 160px))}}
-
   /* ===== Illustrated coastal banner ===== */
   .banner{margin:18px 0 8px;border-radius:16px;overflow:hidden;border:1px solid var(--line);box-shadow:0 8px 24px rgba(10,77,104,.12);}
   .banner svg{display:block;width:100%;height:auto;}
+
+  /* ===== Interactive map ===== */
+  #leafmap{height:450px;width:100%;border-radius:16px;border:1px solid var(--line);
+    box-shadow:0 10px 26px rgba(10,77,104,.12);background:#e9f1f4;z-index:0;}
+  @media (max-width:560px){#leafmap{height:360px;}}
+  .map-note{margin-top:8px;}
+  .map-legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin:12px 0 0;font-size:.85rem;color:var(--muted);}
+  .map-legend .lg{display:inline-flex;align-items:center;gap:6px;}
+  .map-legend .dot{width:14px;height:14px;border-radius:50%;border:2px solid #fff;
+    box-shadow:0 1px 3px rgba(0,0,0,.3);display:inline-block;flex:0 0 auto;}
+  .pin{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;
+    border:2.5px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.35);font-size:15px;line-height:1;}
+  .pin-home{background:var(--amber);}
+  .pin-gdansk{background:var(--baltic);}
+  .pin-sopot{background:var(--teal);}
+  .pin-gdynia{background:var(--sea);}
+  .pin-trip{background:var(--amber-deep);}
+  .map-legend .dot.pin-home,.map-legend .dot.pin-gdansk,.map-legend .dot.pin-sopot,
+  .map-legend .dot.pin-gdynia,.map-legend .dot.pin-trip{width:14px;height:14px;}
+  .pin.big{width:34px;height:34px;font-size:17px;}
+  .pin-pulse{animation:pinpulse 2.4s ease-out infinite;}
+  @keyframes pinpulse{
+    0%{box-shadow:0 0 0 0 rgba(232,168,56,.55),0 2px 6px rgba(0,0,0,.35)}
+    70%{box-shadow:0 0 0 13px rgba(232,168,56,0),0 2px 6px rgba(0,0,0,.35)}
+    100%{box-shadow:0 0 0 0 rgba(232,168,56,0),0 2px 6px rgba(0,0,0,.35)}}
+  .leaflet-popup-content-wrapper{border-radius:12px;box-shadow:0 8px 24px rgba(10,77,104,.22);}
+  .leaflet-popup-content{margin:12px 14px;font-family:"Inter",sans-serif;}
+  .pop strong{display:block;color:var(--baltic-deep);font-size:1rem;font-family:"Fraunces",Georgia,serif;}
+  .pop-tag{display:block;color:var(--muted);font-size:.82rem;margin:2px 0 6px;}
+  .pop-link{font-weight:700;font-size:.85rem;color:var(--sea);text-decoration:none;}
+  .pop-link:hover{color:var(--amber-deep);}
 </style>
 </head>
 <body>
@@ -288,15 +336,15 @@
 <button class="totop" id="totop" aria-label="Späť hore" title="Späť hore">↑</button>
 
 <header class="hero">
+  <img class="hero-photo" alt="" aria-hidden="true"
+       src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/Gda%C5%84sk_Mot%C5%82awa_20180916_151558_ubt.jpg/1920px-Gda%C5%84sk_Mot%C5%82awa_20180916_151558_ubt.jpg"
+       onerror="this.style.display='none'">
+  <div class="hero-shade" aria-hidden="true"></div>
   <div class="sun" aria-hidden="true"></div>
-  <div class="planes" aria-hidden="true">
-    <span class="plane p1"><svg viewBox="0 0 512 512"><path d="M480 256c0-14-11-25-25-25H322L196 54a14 14 0 0 0-12-7h-29c-9 0-15 8-13 16l40 168H110l-34-45a8 8 0 0 0-6-3H42c-9 0-15 9-12 17l20 59-20 59c-3 8 3 17 12 17h28c2 0 5-1 6-3l34-45h72l-40 168c-2 8 4 16 13 16h29c5 0 9-3 12-7l126-177h133c14 0 25-11 25-25z"/></svg></span>
-    <span class="plane p2"><svg viewBox="0 0 512 512"><path d="M480 256c0-14-11-25-25-25H322L196 54a14 14 0 0 0-12-7h-29c-9 0-15 8-13 16l40 168H110l-34-45a8 8 0 0 0-6-3H42c-9 0-15 9-12 17l20 59-20 59c-3 8 3 17 12 17h28c2 0 5-1 6-3l34-45h72l-40 168c-2 8 4 16 13 16h29c5 0 9-3 12-7l126-177h133c14 0 25-11 25-25z"/></svg></span>
-  </div>
-  <p class="kicker">Rodinný cestovateľský sprievodca</p>
-  <h1>Gdynia a pobrežie Trojmestia</h1>
-  <p class="dates">Týždeň na poľskom pobreží Baltu · 25. jún – 2. júl 2026</p>
-  <p class="crew">Pre rodinu: rodičia, brat a sestra · pohodové tempo · od každého niečo</p>
+  <p class="kicker">Cestovateľský sprievodca pre dvoch</p>
+  <h1>Gdansk a pobrežie Trojmestia</h1>
+  <p class="dates">Šesť dní na poľskom pobreží Baltu · 19.–24. júl 2026</p>
+  <p class="crew">Výlet pre dvoch · pohodové tempo · od každého niečo</p>
   <div class="waves" aria-hidden="true">
     <svg viewBox="0 24 150 28" preserveAspectRatio="none">
       <defs>
@@ -319,7 +367,7 @@
   <div id="tab-guide" class="tabpane">
 
   <div class="banner reveal">
-    <svg viewBox="0 0 1200 240" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustrácia baltského pobrežia: plachetnica, mólo, staré mesto Gdanska a hrad Malbork">
+    <svg viewBox="0 0 1200 240" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustrácia baltského pobrežia: staré mesto Gdanska so žeriavom, mólo v Sopotoch, plachetnica v Gdyni a hrad Malbork">
       <defs>
         <linearGradient id="bsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bfe6f1"/><stop offset="1" stop-color="#eaf6fa"/></linearGradient>
         <linearGradient id="bsea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2e9bb5"/><stop offset="1" stop-color="#1789a6"/></linearGradient>
@@ -330,11 +378,11 @@
       <g stroke="#0a4d68" stroke-width="3" fill="none" stroke-linecap="round" opacity=".55"><path d="M120 78 q10 -10 20 0 q10 -10 20 0"/><path d="M470 60 q8 -8 16 0 q8 -8 16 0"/><path d="M980 96 q8 -8 16 0 q8 -8 16 0"/></g>
       <!-- Gdansk skyline + crane -->
       <g fill="#0a4d68">
-        <path d="M690 152 v-52 l10 -14 l10 14 v52 z"/>
-        <path d="M712 152 v-64 l12 -16 l12 16 v64 z"/>
-        <path d="M738 152 v-46 l9 -12 l9 12 v46 z"/>
-        <path d="M760 152 v-92 l14 -18 l14 18 v92 z"/><rect x="771" y="40" width="6" height="14"/>
-        <path d="M802 152 v-58 h28 v58 z"/><path d="M808 94 l24 -22 l8 9 l-22 19 z"/>
+        <path d="M150 152 v-52 l10 -14 l10 14 v52 z"/>
+        <path d="M172 152 v-64 l12 -16 l12 16 v64 z"/>
+        <path d="M198 152 v-46 l9 -12 l9 12 v46 z"/>
+        <path d="M220 152 v-92 l14 -18 l14 18 v92 z"/><rect x="231" y="40" width="6" height="14"/>
+        <path d="M262 152 v-58 h28 v58 z"/><path d="M268 94 l24 -22 l8 9 l-22 19 z"/>
       </g>
       <!-- Malbork castle silhouette -->
       <g fill="#0a4d68" opacity=".92">
@@ -351,10 +399,10 @@
       <g><rect x="408" y="158" width="3" height="28" fill="#0a4d68"/><path d="M396 160 a16 9 0 0 1 30 0 z" fill="#e8a838"/></g>
       <!-- Gdynia sailboat -->
       <g>
-        <path d="M150 198 l72 0 l-11 18 l-50 0 z" fill="#ffffff"/>
-        <rect x="184" y="140" width="3" height="58" fill="#0a4d68"/>
-        <path d="M188 144 l40 46 l-40 0 z" fill="#ffffff" stroke="#0a4d68" stroke-width="2"/>
-        <path d="M182 144 l-30 46 l30 0 z" fill="#e3f1f6" stroke="#0a4d68" stroke-width="2"/>
+        <path d="M690 198 l72 0 l-11 18 l-50 0 z" fill="#ffffff"/>
+        <rect x="724" y="140" width="3" height="58" fill="#0a4d68"/>
+        <path d="M728 144 l40 46 l-40 0 z" fill="#ffffff" stroke="#0a4d68" stroke-width="2"/>
+        <path d="M722 144 l-30 46 l30 0 z" fill="#e3f1f6" stroke="#0a4d68" stroke-width="2"/>
       </g>
     </svg>
   </div>
@@ -363,11 +411,11 @@
     <h2>Čo nájdete vnútri</h2>
     <ul>
       <li><a href="#orient">Ako sa zorientovať</a></li>
-      <li><a href="#opener">⚠ Týždeň festivalu Open'er</a></li>
+      <li><a href="#mapa">Mapa výletu</a></li>
       <li><a href="#getting">Doprava</a></li>
-      <li><a href="#gdynia">Gdynia (základňa)</a></li>
+      <li><a href="#gdansk">Gdansk (základňa)</a></li>
       <li><a href="#sopot">Sopoty</a></li>
-      <li><a href="#gdansk">Gdansk</a></li>
+      <li><a href="#gdynia">Gdynia</a></li>
       <li><a href="#daytrips">Výlety do okolia</a></li>
       <li><a href="#hours">Otváracie hodiny</a></li>
       <li><a href="#whichday">Ktorý deň na čo</a></li>
@@ -379,34 +427,28 @@
   <!-- ORIENTACIA -->
   <section id="orient">
     <h2 class="sec reveal"><span class="ico">🧭</span> Ako sa zorientovať</h2>
-    <p class="sub reveal">Jedno pobrežie, tri mestá, nekonečné možnosti — všetko na pár minút vlakom.</p>
-    <p class="reveal">Bývate v meste <strong>Gdynia</strong>, na severnom konci <strong>Trojmestia</strong> (po poľsky <em>Trójmiasto</em>) — troch miest, ktoré splývajú do jedného popri Gdanskom zálive. Od severu na juh: <strong>Gdynia</strong> (moderná, námornícka, vzdušná), <strong>Sopoty</strong> (elegantné kúpeľné mesto v strede) a <strong>Gdansk</strong> (historický, malebný starý prístav). Prímestský vlak <strong>SKM</strong> ich spája každých 10–15 minút, takže celé pobrežie môžete brať ako svoje ihrisko a každú noc spať v Gdyni.</p>
-    <p class="reveal">Celkový plán na váš týždeň: pohodové dni v Gdyni a na plážach, výlet do starého mesta Gdanska a jeho špičkových historických múzeí, oddychové popoludnie v Sopotoch a jeden či dva väčšie výlety (hrad Malbork a Helský polostrov sú hviezdy). Jedna dôležitá vec práve tento týždeň — festival <strong>Open'er</strong> — je rozobratá hneď nižšie.</p>
+    <p class="sub reveal">Jedno pobrežie, tri mestá, a vy bývate priamo v tom najkrajšom z nich.</p>
+    <p class="reveal">Bývate v meste <strong>Gdansk</strong>, na južnom konci <strong>Trojmestia</strong> (po poľsky <em>Trójmiasto</em>) — troch miest, ktoré splývajú do jedného popri Gdanskom zálive. Od juhu na sever: <strong>Gdansk</strong> (historický, malebný starý prístav — vaša základňa), <strong>Sopoty</strong> (elegantné kúpeľné mesto v strede) a <strong>Gdynia</strong> (moderná, námornícka, vzdušná). Prímestský vlak <strong>SKM</strong> ich spája každých 10–15 minút, takže staré mesto máte doslova za rohom a k plážam na sever sa dostanete za pár minút.</p>
+    <p class="reveal">Celkový plán na vašich šesť dní: pomalé rána a večery v starom meste Gdanska, jeho špičkové historické múzeá, oddychové popoludnie na plážach v Sopotoch, skok do námorníckej Gdyne a jeden či dva väčšie výlety (hrad Malbork a Helský polostrov sú hviezdy). Keďže ste dvaja, môžete si tempo skladať úplne po svojom.</p>
     <div class="callout tip reveal">
-      <h3>✓ Prečo je Gdynia šikovná základňa na pohodový výlet</h3>
-      <p>Všetko je dostupné rovinatým a častým vlakom namiesto auta. Samotná Gdynia má príjemné prechádzkové promenády pri mori vhodné na pokojné ráno, zatiaľ čo náročnejšie pamiatky (Gdansk, Malbork) sú na skok výletom. Môžete striedať nabité a lenivé dni a nikdy sa nemusíte prebaľovať.</p>
+      <h3>✓ Prečo je Gdansk ideálna základňa pre dvoch</h3>
+      <p>Bývať priamo v historickom jadre znamená, že rána aj večery máte v najatmosférickejšej časti pobrežia — káva pri rieke Motława, západ slnka nad starým prístavom, večera v uzučkých uličkách. Cez deň si vyberáte: múzeá pár krokov od dverí, pláže v Sopotoch na skok vlakom, alebo väčší výlet na Malbork či Hel. Žiadne prebaľovanie, len striedanie nabitých a lenivých dní vo dvojici.</p>
     </div>
   </section>
 
-  <!-- OPENER -->
-  <section id="opener">
-    <h2 class="sec reveal"><span class="ico">🎪</span> Najprv si prečítajte: v meste je festival Open'er</h2>
-    <p class="sub reveal">Najväčšia vec, ktorá ovplyvní váš týždeň — v dobrom aj v zlom.</p>
-    <div class="callout headline reveal">
-      <h3>Festival Open'er 2026 · 1.–4. júl · letisko Gdynia-Kosakowo</h3>
-      <p>Najväčší poľský hudobný festival pristáva na letisku v severnej Gdyni počas <strong>posledných dvoch dní vášho výletu (do neho spadá streda 1. a štvrtok 2. júl)</strong>. Headlineri v tých dňoch zahŕňajú <strong>Florence + The Machine, The xx a David Byrne (1. júl)</strong> a <strong>Calvina Harrisa, Nicka Cavea &amp; The Bad Seeds a Halsey (2. júl)</strong>. Od 1. júla prichádzajú desaťtisíce návštevníkov.</p>
+  <!-- MAPA -->
+  <section id="mapa">
+    <h2 class="sec reveal"><span class="ico">📍</span> Mapa výletu</h2>
+    <p class="sub reveal">Všetky miesta na jednej mape — základňa v Gdansku, pobrežné mestá a dva veľké výlety. Kliknite na značku pre detail.</p>
+    <div id="leafmap"></div>
+    <div class="map-legend reveal">
+      <span class="lg"><i class="dot pin-home"></i> Základňa (Gdansk)</span>
+      <span class="lg"><i class="dot pin-gdansk"></i> Gdansk</span>
+      <span class="lg"><i class="dot pin-sopot"></i> Sopoty</span>
+      <span class="lg"><i class="dot pin-gdynia"></i> Gdynia</span>
+      <span class="lg"><i class="dot pin-trip"></i> Výlety</span>
     </div>
-    <p class="reveal">Čo to znamená pre vašu rodinu, či už naň pôjdete alebo nie:</p>
-    <ul class="clean reveal">
-      <li><strong>Ak by ste chceli ísť:</strong> vstupenky a denný program nájdete na <a href="https://opener.pl/en/tickets">oficiálnej stránke Open'er</a>. Je to mladé, energické publikum do neskorých nočných hodín — zábava pre brata a sestru, pre rodičov možno priveľa.</li>
-      <li><strong>Ak ho radšej vynecháte:</strong> využite 1.–2. júl ako dni na <em>výlet mimo mesta</em>. Hrad Malbork alebo celý deň v starom meste Gdanska budú pokojné, kým Gdynia bzučí.</li>
-      <li><strong>Vlaky a doprava:</strong> vlaky SKM a cesty v severnej Gdyni budú 1.–2. júla v neskorých popoludňajších a večerných hodinách plné. Miestne pamiatky v Gdyni si pozrite skôr cez týždeň a naplánujte návrat na ubytovanie pred večernou špičkou — alebo buďte úplne mimo mesta.</li>
-      <li><strong>Stravovanie:</strong> večeru v Gdyni si na 1.–2. júla rezervujte vopred; reštaurácie pri mori sa rýchlo zaplnia.</li>
-    </ul>
-    <div class="callout warn reveal">
-      <h3>⚠ Rýchle upozornenie</h3>
-      <p>Keďže festival ženie dopyt, koniec vášho týždňa je najrušnejší. Všetko v Gdyni, čo si chcete vychutnať pomalým tempom (mólo, akvárium, lanovka, pláže), si dajte na 25.–30. jún.</p>
-    </div>
+    <p class="muted-note map-note reveal">Ťahaním posúvate, kolieskom (po kliknutí do mapy) alebo tlačidlami +/− priblížite. Mapa sa načíta pri pripojení na internet.</p>
   </section>
 
   <!-- DOPRAVA -->
@@ -415,99 +457,43 @@
     <p class="sub reveal">Vlak SKM je váš čarovný koberec. Naučte sa ho raz a používajte celý týždeň.</p>
     <div class="card reveal">
       <h3>Prímestský vlak SKM</h3>
-      <p>SKM (<em>Szybka Kolej Miejska</em>) premáva hore-dole po pobreží väčšinu dňa každých 10–15 minút a spája Gdyňu ↔ Sopoty ↔ Gdansk. Je lacný, bezbariérový a najjednoduchší spôsob, ako pohnúť celú rodinu bez auta.</p>
-      <p class="meta"><strong>Ukážkové ceny a časy:</strong> Gdansk ↔ Gdynia približne 9,60 zł, ~35 min · Gdansk ↔ Sopoty približne 6,50 zł, ~20 min · Gdynia ↔ Sopoty je ešte kratšie a lacnejšie.</p>
+      <p>SKM (<em>Szybka Kolej Miejska</em>) premáva hore-dole po pobreží väčšinu dňa každých 10–15 minút a spája Gdansk ↔ Sopoty ↔ Gdyňu. Je lacný, bezbariérový a najjednoduchší spôsob, ako sa dvom ľuďom pohybovať bez auta. Nastupujete priamo na stanici <strong>Gdansk Główny</strong> alebo <strong>Gdansk Śródmieście</strong> kúsok od starého mesta.</p>
+      <p class="meta"><strong>Ukážkové ceny a časy:</strong> Gdansk ↔ Sopoty približne 6,50 zł, ~20 min · Gdansk ↔ Gdynia približne 9,60 zł, ~35 min · Sopoty ↔ Gdynia je ešte kratšie.</p>
       <p class="meta"><strong>Vstupenky:</strong> kúpte si ich v automatoch na nástupišti (menu v angličtine), pri pokladni <em>Kasa Biletowa</em>, alebo cez aplikácie <strong>Jakdojade</strong> či <strong>SkyCash</strong>. <strong>Papierové lístky si pred nástupom označte/opečiatkujte</strong>, ak automat nevytlačí čas.</p>
     </div>
     <div class="callout tip reveal">
       <h3>✓ Tipy na pohodové tempo</h3>
-      <p>Kúpte si viac lístkov naraz, aby ste sa vyhli radom. Vlaky majú schody — ak rodičia nesú ťažkú batožinu, cestujte naľahko a mierte mimo špičky (predpoludním, skoro popoludní). Na Malbork a Hel použijete regionálne/diaľkové vlaky (PKP Intercity, Polregio), nie SKM — pozri Výlety.</p>
+      <p>Kúpte si viac lístkov naraz, aby ste sa vyhli radom. Na Malbork a Hel použijete regionálne/diaľkové vlaky (PKP Intercity, Polregio) z Gdansk Główny, nie SKM — pozri Výlety. Cez leto cestujte na pláže radšej mimo špičky (predpoludním, skoro popoludní), vlaky k moru bývajú cez víkendy plné.</p>
     </div>
-  </section>
-
-  <!-- GDYNIA -->
-  <section id="gdynia">
-    <h2 class="sec reveal"><span class="ico">⚓</span> Gdynia — vaša základňa</h2>
-    <p class="sub reveal">Moderná, námornícka a stvorená na prechádzky. Pokojné rána si nechajte sem.</p>
-
-    <div class="card reveal">
-      <h3>Južné mólo a nábrežie (Molo Południowe)</h3>
-      <p>Srdce Gdyne: široké mólo dlhé vyše 600 m a promenáda s obrovským nápisom „GDYNIA", pomníkmi, prístavom, múzejnými loďami a akváriom — všetko na jednej prechádzke. Rovinaté, malebné a ideálne na pohodové prvé popoludnie, aby ste sa zorientovali.</p>
-      <div class="tags"><span class="tag beach">Nábrežie</span><span class="tag">Ľahká prechádzka</span><span class="tag kids">Pre rodiny</span></div>
-    </div>
-
-    <div class="card reveal">
-      <h3>Akvárium Gdynia</h3>
-      <p>Priamo na Južnom móle — baltský aj tropický morský život v tematických nádržiach. Spoľahlivý hit a dobrá voľba do dažďa.</p>
-      <p class="meta"><strong>Otvorené:</strong> denne 9:00–19:00 (vstup do ~19:30). <strong>Vstupné (máj–august):</strong> ~48 zł / 34 zł znížené.</p>
-      <div class="tags"><span class="tag cult">Múzeum</span><span class="tag kids">Pre rodiny</span></div>
-    </div>
-
-    <div class="card reveal">
-      <h3>Múzejné lode: Dar Pomorza a ORP Błyskawica</h3>
-      <p>Dve historické plavidlá pri móle — elegantná plachetnica <strong>Dar Pomorza</strong> a torpédoborec z 2. svetovej vojny <strong>ORP Błyskawica</strong>. Vyjdite na paluby a nahliadnite do sveta námorníkov. Prirodzená voľba pre milovníkov histórie.</p>
-      <div class="tags"><span class="tag hist">História</span><span class="tag cult">Námorníctvo</span></div>
-    </div>
-
-    <div class="card reveal">
-      <h3>Múzeum emigrácie (Muzeum Emigracji)</h3>
-      <p>V historickej Námornej stanici, odkiaľ milióny Poliakov odplávali za novým životom do zahraničia. Dojímavé, krásne navrhnuté a jedno z najlepších múzeí v meste.</p>
-      <p class="meta"><strong>Otvorené:</strong> ut–ne (<span class="closed">v pondelok zatvorené</span>). <span class="free">V stredu vstup zdarma</span>; deti do 7 rokov zdarma.</p>
-      <div class="tags"><span class="tag hist">História</span><span class="tag cult">Múzeum</span></div>
-    </div>
-
-    <div class="card reveal">
-      <h3>Lanovka Kamienna Góra a vyhliadka</h3>
-      <p>Malá lanovka vyvezie na vrch Kamienna Góra približne za dve minúty (zdarma) k vyhliadke s rozhľadom na mesto, prístav a more — obklopenej peknými modernistickými vilami z 20.–30. rokov. Nádherné pri západe slnka a takmer bez námahy.</p>
-      <div class="tags"><span class="tag">Vyhliadka</span><span class="tag">Nenáročné</span></div>
-    </div>
-
-    <div class="card reveal">
-      <h3>Útes a mólo Orłowo</h3>
-      <p>Pôvabná južná štvrť s malým dreveným mólom, zalesneným útesom a pokojnejšou plážou s kaviarňami — príjemné poldenie pri mori mimo hlavného ruchu.</p>
-      <div class="tags"><span class="tag beach">Pláž</span><span class="tag nat">Pobrežie</span></div>
-    </div>
-
-    <div class="card reveal">
-      <h3>Prírodná rezervácia Kępa Redłowska</h3>
-      <p>Lesné chodníky na útesoch medzi mestskou plážou a Orłowom s výhľadom na more. Ľahká až stredne náročná prechádzka pre toho z rodiny, kto si chce ponaťahovať nohy.</p>
-      <div class="tags"><span class="tag nat">Príroda</span><span class="tag">Turistika</span></div>
-    </div>
-
-    <div class="card reveal">
-      <h3>Centrum vedy Experyment a Mestské múzeum Gdyne</h3>
-      <p><strong>Experyment</strong> je interaktívne centrum vedy (skvelá zábava, dobré do nečasu). <strong>Mestské múzeum</strong> rozpráva, ako Gdynia za pár desaťročí vyrástla z rybárskej dediny na moderný poľský prístav.</p>
-      <div class="tags"><span class="tag cult">Múzeum</span><span class="tag kids">Interaktívne</span></div>
-    </div>
-  </section>
-
-  <!-- SOPOTY -->
-  <section id="sopot">
-    <h2 class="sec reveal"><span class="ico">🏖️</span> Sopoty — nóbl kúpeľné mesto</h2>
-    <p class="sub reveal">Dvadsať pohodlných minút vlakom. Klasický deň pri Balte.</p>
-    <div class="card reveal">
-      <h3>Mólo v Sopotoch (Molo)</h3>
-      <p>Najdlhšie drevené mólo v Európe, siahajúce ďaleko do Baltu — typická prímorská promenáda s prístavom, plážou a výhľadmi na záliv. Spojte ho s rušnou ulicou <strong>Monte Cassino</strong> („Monciak"), ktorá vedie dolu k moru a je lemovaná kaviarňami, a s pohľadom na šibnutý <strong>Krivý dom (Krzywy Domek)</strong>.</p>
-      <div class="tags"><span class="tag beach">Pláž</span><span class="tag">Promenáda</span><span class="tag kids">Pre rodiny</span></div>
-    </div>
-    <p class="reveal">Sopoty sú najjednoduchšie a najoddychovejšie z troch miest — ideálne na popoludnie so zmrzlinou, čľapkaním v mori a pozorovaním ľudí. <strong>Lesná opera</strong> (Opera Leśna) a neďaleká <strong>Ergo Arena</strong> hostia v lete koncerty veľkých mien, ak vás niečo zláka.</p>
   </section>
 
   <!-- GDANSK -->
   <section id="gdansk">
-    <h2 class="sec reveal"><span class="ico">🏰</span> Gdansk — historické srdce</h2>
-    <p class="sub reveal">Malebné staré mesto a dve zo špičkových historických múzeí Európy. Stojí za celý deň (alebo dva).</p>
+    <h2 class="sec reveal"><span class="ico">🏰</span> Gdansk — vaša základňa</h2>
+    <p class="sub reveal">Malebné staré mesto a dve zo špičkových historických múzeí Európy. Máte to všetko za rohom.</p>
 
     <div class="card reveal">
+      <div class="cardimg"><img loading="lazy" alt="Dlhé trhovisko (Długi Targ) v Gdansku"
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/D%C5%82ugi_Targ_Square_in_Gda%C5%84sk%2C_2016_01.jpg/1920px-D%C5%82ugi_Targ_Square_in_Gda%C5%84sk%2C_2016_01.jpg"
+        onerror="this.closest('.cardimg').style.display='none'"></div>
       <h3>Hlavné mesto a Dlhé trhovisko (Długi Targ)</h3>
-      <p>Nádherne obnovené kupecké domy, Neptúnova fontána, Kostol Panny Márie (jeden z najväčších tehlových kostolov na svete — vyjdite na vežu za výhľadom) a atmosférická ulica <strong>Mariacka</strong> s obchodíkmi s jantárom. Prejdite sa po nábreží rieky <strong>Motława</strong> popri stredovekom žeriave (<em>Żuraw</em>).</p>
-      <div class="tags"><span class="tag hist">Staré mesto</span><span class="tag beach">Nábrežie</span><span class="tag cult">Jantár</span></div>
+      <p>Vaše ranné aj večerné ihrisko: nádherne obnovené kupecké domy, Neptúnova fontána, Kostol Panny Márie (jeden z najväčších tehlových kostolov na svete — vyjdite na vežu za výhľadom) a nábrežie rieky <strong>Motława</strong> so stredovekým žeriavom (<em>Żuraw</em>). Ráno tichá dlažba pre dvoch, večer rozsvietené priečelia a člnky na rieke.</p>
+      <div class="tags"><span class="tag hist">Staré mesto</span><span class="tag beach">Nábrežie</span><span class="tag">Prechádzka</span></div>
+    </div>
+
+    <div class="card reveal">
+      <div class="cardimg"><img loading="lazy" alt="Ulica Mariacka s obchodíkmi s jantárom v Gdansku"
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Gda%C5%84sk_G%C5%82%C3%B3wne_Miasto%2C_ulica_Mariacka_-_panoramio.jpg/1920px-Gda%C5%84sk_G%C5%82%C3%B3wne_Miasto%2C_ulica_Mariacka_-_panoramio.jpg"
+        onerror="this.closest('.cardimg').style.display='none'"></div>
+      <h3>Ulica Mariacka a jantár</h3>
+      <p>Najfotogenickejšia ulica v meste — kamenné terasy, chrliče a rad obchodíkov s <strong>jantárom</strong> (Gdansk je svetová jantárová metropola). Ideálne miesto na pomalú prechádzku vo dvojici a možno malý suvenír. Vyúsťuje k Motławe pri Žeriave.</p>
+      <div class="tags"><span class="tag cult">Jantár</span><span class="tag">Fotenie</span></div>
     </div>
 
     <div class="card reveal">
       <h3>Múzeum druhej svetovej vojny</h3>
-      <p>Rozľahlé, pôsobivé, ocenené múzeum — pre milovníkov histórie v skupine asi to najdôležitejšie. Vyhraďte si 2,5–3 hodiny.</p>
-      <p class="meta"><strong>Otvorené:</strong> ut 10:00–16:00, st–ne 10:00–18:00 (od júla predĺžené do 20:00), <span class="closed">v pondelok zatvorené</span>. <span class="free">V utorok vstup zdarma</span> — rezervujte si čas, lebo dni zdarma sú rušné.</p>
+      <p>Rozľahlé, pôsobivé, ocenené múzeum — pre milovníka histórie asi to najdôležitejšie v meste. Vyhraďte si 2,5–3 hodiny.</p>
+      <p class="meta"><strong>Otvorené (leto):</strong> ut–ne, <span class="closed">v pondelok zatvorené</span>. <span class="free">V utorok vstup zdarma</span> — rezervujte si čas, lebo dni zdarma sú rušné.</p>
       <div class="tags"><span class="tag hist">2. sv. vojna</span><span class="tag cult">Múzeum</span></div>
     </div>
 
@@ -520,21 +506,85 @@
 
     <div class="card reveal">
       <h3>Westerplatte</h3>
-      <p>Miesto, kde v roku 1939 padli prvé výstrely 2. svetovej vojny — dnes pamätník a vonkajší areál pri vode. Dostupné malebným prievozom/loďou po Motławe alebo autobusom; vyhraďte si pár hodín. Dobre dopĺňa tému 2. svetovej vojny.</p>
+      <p>Miesto, kde v roku 1939 padli prvé výstrely 2. svetovej vojny — dnes pamätník a vonkajší areál pri vode. Dostupné malebným prievozom/loďou po Motławe zo starého mesta alebo autobusom; vyhraďte si pár hodín. Dobre dopĺňa tému 2. svetovej vojny.</p>
       <div class="tags"><span class="tag hist">2. sv. vojna</span><span class="tag nat">Vonku</span></div>
     </div>
     <div class="callout tip reveal">
       <h3>✓ Ako na históriu správne</h3>
-      <p>Múzeum 2. svetovej vojny aj ECS sú obe rozsiahle. Rozdelenie do dvoch návštev Gdanska udrží tempo pre rodičov pohodové. Pozor — ich dni zatvorenia sú rôzne (Múzeum 2. sv. vojny zatvorené v pondelok, ECS v utorok), takže takmer každý deň je jedno z nich otvorené — pozri plánovač „Ktorý deň na čo" nižšie.</p>
+      <p>Múzeum 2. svetovej vojny aj ECS sú obe rozsiahle. Rozdelenie do dvoch návštev udrží tempo pohodové. Pozor — ich dni zatvorenia sú rôzne (Múzeum 2. sv. vojny zatvorené v pondelok, ECS v utorok), takže takmer každý deň je jedno z nich otvorené — pozri plánovač „Ktorý deň na čo" nižšie.</p>
+    </div>
+  </section>
+
+  <!-- SOPOTY -->
+  <section id="sopot">
+    <h2 class="sec reveal"><span class="ico">🏖️</span> Sopoty — nóbl kúpeľné mesto</h2>
+    <p class="sub reveal">Dvadsať pohodlných minút vlakom na sever. Klasický deň pri Balte.</p>
+
+    <div class="card reveal">
+      <div class="cardimg"><img loading="lazy" alt="Mólo v Sopotoch s výhľadom na pobrežie"
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Sopot._Widok_z_molo_na_Sheraton_Sopot_Hotel_i_Grand_Hotel._-_panoramio.jpg/1920px-Sopot._Widok_z_molo_na_Sheraton_Sopot_Hotel_i_Grand_Hotel._-_panoramio.jpg"
+        onerror="this.closest('.cardimg').style.display='none'"></div>
+      <h3>Mólo v Sopotoch (Molo)</h3>
+      <p>Najdlhšie drevené mólo v Európe, siahajúce ďaleko do Baltu — typická prímorská promenáda s prístavom, plážou a výhľadmi na záliv. Spojte ho s rušnou ulicou <strong>Monte Cassino</strong> („Monciak"), ktorá vedie dolu k moru a je lemovaná kaviarňami.</p>
+      <div class="tags"><span class="tag beach">Pláž</span><span class="tag">Promenáda</span></div>
+    </div>
+
+    <div class="card reveal">
+      <div class="cardimg"><img loading="lazy" alt="Krivý dom (Krzywy Domek) v Sopotoch"
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Krzywy_Domek_Sopot_1.jpg/1920px-Krzywy_Domek_Sopot_1.jpg"
+        onerror="this.closest('.cardimg').style.display='none'"></div>
+      <h3>Krivý dom (Krzywy Domek)</h3>
+      <p>Šibnutá, vlnitá budova priamo na Monciaku — jedna z najfotografovanejších stavieb v Poľsku. Skvelá zastávka cestou k moru s kaviarňami a obchodíkmi vôkol.</p>
+      <div class="tags"><span class="tag cult">Architektúra</span><span class="tag">Fotenie</span></div>
+    </div>
+
+    <p class="reveal">Sopoty sú najoddychovejšie z troch miest — ideálne na popoludnie so zmrzlinou, čľapkaním v mori a pozorovaním ľudí. <strong>Lesná opera</strong> (Opera Leśna) a neďaleká <strong>Ergo Arena</strong> hostia v lete koncerty veľkých mien, ak vás niečo zláka.</p>
+  </section>
+
+  <!-- GDYNIA -->
+  <section id="gdynia">
+    <h2 class="sec reveal"><span class="ico">⚓</span> Gdynia — moderný prístav na skok</h2>
+    <p class="sub reveal">Najsevernejšie z trojice, ~35 minút vlakom. Námornícka, vzdušná, stvorená na prechádzky.</p>
+
+    <div class="card reveal">
+      <div class="cardimg"><img loading="lazy" alt="Plachetnica Dar Pomorza na móle v Gdyni"
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Dar_Pomorza%2C_Gdynia_2018.jpg/1920px-Dar_Pomorza%2C_Gdynia_2018.jpg"
+        onerror="this.closest('.cardimg').style.display='none'"></div>
+      <h3>Južné mólo a múzejné lode</h3>
+      <p>Srdce Gdyne: široké mólo s obrovským nápisom „GDYNIA", prístavom a dvomi historickými plavidlami — elegantnou plachetnicou <strong>Dar Pomorza</strong> a torpédoborcom z 2. svetovej vojny <strong>ORP Błyskawica</strong>. Rovinatá, malebná prechádzka pri mori.</p>
+      <div class="tags"><span class="tag beach">Nábrežie</span><span class="tag hist">Námorníctvo</span></div>
+    </div>
+
+    <div class="card reveal">
+      <h3>Akvárium Gdynia</h3>
+      <p>Priamo na Južnom móle — baltský aj tropický morský život v tematických nádržiach. Spoľahlivý hit a dobrá voľba do dažďa.</p>
+      <p class="meta"><strong>Otvorené:</strong> denne 9:00–19:00 (vstup do ~19:30). <strong>Vstupné (máj–august):</strong> ~48 zł / 34 zł znížené.</p>
+      <div class="tags"><span class="tag cult">Múzeum</span><span class="tag">Do dažďa</span></div>
+    </div>
+
+    <div class="card reveal">
+      <h3>Múzeum emigrácie (Muzeum Emigracji)</h3>
+      <p>V historickej Námornej stanici, odkiaľ milióny Poliakov odplávali za novým životom do zahraničia. Dojímavé, krásne navrhnuté a jedno z najlepších múzeí v meste.</p>
+      <p class="meta"><strong>Otvorené:</strong> ut–ne (<span class="closed">v pondelok zatvorené</span>). <span class="free">V stredu vstup zdarma</span>.</p>
+      <div class="tags"><span class="tag hist">História</span><span class="tag cult">Múzeum</span></div>
+    </div>
+
+    <div class="card reveal">
+      <h3>Lanovka Kamienna Góra a Orłowo</h3>
+      <p>Malá lanovka vyvezie na vrch <strong>Kamienna Góra</strong> (zdarma) k vyhliadke na mesto, prístav a more, obklopenej modernistickými vilami z 20.–30. rokov. Na juhu leží pôvabné <strong>Orłowo</strong> s dreveným mólom, zalesneným útesom a pokojnejšou plážou s kaviarňami.</p>
+      <div class="tags"><span class="tag">Vyhliadka</span><span class="tag beach">Pláž</span></div>
     </div>
   </section>
 
   <!-- VYLETY -->
   <section id="daytrips">
     <h2 class="sec reveal"><span class="ico">🗺️</span> Výlety, ktoré stoja za cestu</h2>
-    <p class="sub reveal">Dve jasné voľby a možnosti, ak chcete viac.</p>
+    <p class="sub reveal">Dve jasné voľby z Gdanska a možnosti, ak chcete viac.</p>
 
     <div class="card star reveal">
+      <div class="cardimg"><img loading="lazy" alt="Hrad Malbork nad riekou Nogat"
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Malbork_Castle_2023_109.jpg/1920px-Malbork_Castle_2023_109.jpg"
+        onerror="this.closest('.cardimg').style.display='none'"></div>
       <h3>★ Hrad Malbork — najväčší tehlový hrad na svete</h3>
       <p>Ohromujúca pevnosť Rádu nemeckých rytierov zapísaná v UNESCO, na rieke Nogat, asi hodinu od Gdanska. Audio prehliadka po Historickej trase vás prevedie sálami, komnatami a hradbami — vrchol pre milovníkov histórie a naozaj pôsobivé pre každého.</p>
       <p class="meta"><strong>Otvorené (leto, do 30. sep):</strong> ut–ne 9:00–20:00, posledný vstup na celú Historickú trasu ~16:30. Pondelky: len trasa po areáli 9:00–18:30 (<span class="free">zdarma</span>, ale obmedzene). <strong>Vstupné:</strong> Historická trasa ~80 zł / 60 zł znížené.</p>
@@ -543,9 +593,12 @@
     </div>
 
     <div class="card star reveal">
+      <div class="cardimg"><img loading="lazy" alt="Maják na cípe Helského polostrova"
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Cypel_helski_latarnia_morska.jpg/1920px-Cypel_helski_latarnia_morska.jpg"
+        onerror="this.closest('.cardimg').style.display='none'"></div>
       <h3>★ Helský polostrov a tulenia stanica</h3>
-      <p>Dlhá, štíhla piesočná kosa z borovicových lesov a širokých pláží zasahujúca do Baltu. Rybárske mestečko <strong>Hel</strong> má slávne <strong>Fokarium</strong> (tulenia stanica, ktorú prevádzkuje Univerzita v Gdansku) s každodennými kŕmnymi šou, plus maják, stánky s údenými rybami a krásne pláže na oboch stranách.</p>
-      <p class="meta"><strong>Ako sa tam dostať z Gdyne:</strong> priame regionálne vlaky (~1,5 hod; v sezóne až ~20 denne), <em>alebo</em> sezónny <strong>letný prievoz</strong> z nábrežia v Gdyni pri Skwer Kościuszki (~1,5–2 hod, ~60–80 zł jedným smerom). Plavba je polovica zábavy — závisí od počasia, takže spoje si overte deň vopred.</p>
+      <p>Dlhá, štíhla piesočná kosa z borovicových lesov a širokých pláží zasahujúca do Baltu. Rybárske mestečko <strong>Hel</strong> má slávne <strong>Fokarium</strong> (tulenia stanica Univerzity v Gdansku) s každodennými kŕmnymi šou, plus maják, stánky s údenými rybami a krásne pláže na oboch stranách.</p>
+      <p class="meta"><strong>Ako sa tam dostať z Gdanska:</strong> priame sezónne vlaky, prípadne s prestupom (~2 hod), <em>alebo</em> sezónny <strong>letný prievoz</strong> z nábrežia (cez Gdyňu/Sopoty) — plavba po zálive je polovica zábavy. Spoje závisia od počasia, overte si ich deň vopred.</p>
       <div class="tags"><span class="tag nat">Príroda</span><span class="tag beach">Pláže</span><span class="tag kids">Tulene</span></div>
     </div>
 
@@ -569,12 +622,12 @@
           <tr><th>Atrakcia</th><th>Mesto</th><th>Hodiny (leto)</th><th>Zatvorené</th><th>Cena a poznámky</th></tr>
         </thead>
         <tbody>
-          <tr><td>Akvárium Gdynia</td><td>Gdynia</td><td>Denne 9:00–19:00</td><td>—</td><td>~48 / 34 zł</td></tr>
-          <tr><td>Múzeum emigrácie</td><td>Gdynia</td><td>ut–ne</td><td class="closed">po</td><td><span class="free">Streda zdarma</span>; deti do 7 r. zdarma</td></tr>
-          <tr><td>Lanovka Kamienna Góra</td><td>Gdynia</td><td>Premáva cez deň</td><td>—</td><td><span class="free">Zdarma</span></td></tr>
-          <tr><td>Múzeum 2. svetovej vojny</td><td>Gdansk</td><td>ut 10–16; st–ne 10–18 (v júli do 20:00)</td><td class="closed">po</td><td><span class="free">Utorok zdarma</span>; rezervujte čas</td></tr>
+          <tr><td>Múzeum 2. svetovej vojny</td><td>Gdansk</td><td>ut–ne (ut zvyčajne dlhšie)</td><td class="closed">po</td><td><span class="free">Utorok zdarma</span>; rezervujte čas</td></tr>
           <tr><td>Európske centrum Solidarity (ECS)</td><td>Gdansk</td><td>po–pi 10–19; so–ne 10–20</td><td class="closed">ut</td><td>Platené; rezervujte online</td></tr>
           <tr><td>Westerplatte</td><td>Gdansk</td><td>Vonkajší areál, cez deň</td><td>—</td><td>Areál zdarma; prievoz/autobus</td></tr>
+          <tr><td>Akvárium Gdynia</td><td>Gdynia</td><td>Denne 9:00–19:00</td><td>—</td><td>~48 / 34 zł</td></tr>
+          <tr><td>Múzeum emigrácie</td><td>Gdynia</td><td>ut–ne</td><td class="closed">po</td><td><span class="free">Streda zdarma</span></td></tr>
+          <tr><td>Lanovka Kamienna Góra</td><td>Gdynia</td><td>Premáva cez deň</td><td>—</td><td><span class="free">Zdarma</span></td></tr>
           <tr><td>Hrad Malbork</td><td>Malbork</td><td>ut–ne 9–20 (celá trasa posl. vstup ~16:30); po len areál 9–18:30</td><td>—</td><td>Hist. trasa ~80 / 60 zł; <span class="free">po areál zdarma</span></td></tr>
           <tr><td>Tulenia stanica Hel (Fokarium)</td><td>Hel</td><td>Denne; kŕmne šou dvakrát denne</td><td>—</td><td>Nízke vstupné</td></tr>
         </tbody>
@@ -584,25 +637,23 @@
 
   <!-- KTORY DEN -->
   <section id="whichday">
-    <h2 class="sec reveal"><span class="ico">📅</span> Ktorý deň na čo — váš presný týždeň</h2>
-    <p class="sub reveal">Dni zatvorenia a festival robia niektoré dni oveľa vhodnejšími na určité plány.</p>
+    <h2 class="sec reveal"><span class="ico">📅</span> Ktorý deň na čo — vašich šesť dní</h2>
+    <p class="sub reveal">Dni zatvorenia robia niektoré dni oveľa vhodnejšími na určité plány.</p>
     <div class="days reveal">
-      <div class="day"><div class="d">Št 25. jún</div><div class="note">Príchod · pohodové mólo a nábrežie v Gdyni</div></div>
-      <div class="day"><div class="d">Pi 26. jún</div><div class="note">Múzeá a lode v Gdyni</div></div>
-      <div class="day"><div class="d">So 27. jún</div><div class="note">Staré mesto Gdansk + múzeum</div></div>
-      <div class="day"><div class="d">Ne 28. jún</div><div class="note">Sopoty a deň na pláži</div></div>
-      <div class="day"><div class="d">Po 29. jún</div><div class="note">Veľa múzeí zatvorených → Hel alebo pláže či ECS (v po otvorené)</div></div>
-      <div class="day"><div class="d">Ut 30. jún</div><div class="note">Múzeum 2. sv. vojny (ut zdarma) — ECS zatvorené</div></div>
-      <div class="day flag"><div class="d">St 1. júl</div><div class="note">Open'er 1. deň · Múzeum emigrácie zdarma (st) · alebo výlet mimo mesta</div></div>
-      <div class="day flag"><div class="d">Št 2. júl</div><div class="note">Open'er 2. deň · výlet do Malborku proti davom / odchod</div></div>
+      <div class="day"><div class="d">Ne 19. júl</div><div class="note">Príchod · ubytovanie v Gdansku · večerná prechádzka po Długim Targu a Motławe</div></div>
+      <div class="day"><div class="d">Po 20. júl</div><div class="note">Múzeá väčšinou zatvorené (po) → pláž a mólo v Sopotoch alebo Gdynia; ECS je v pondelok otvorené</div></div>
+      <div class="day flag"><div class="d">Ut 21. júl</div><div class="note">Múzeum 2. sv. vojny (ut zdarma) + staré mesto, Mariacka, Žeriav — ECS zatvorené</div></div>
+      <div class="day flag"><div class="d">St 22. júl</div><div class="note">Celodenný výlet na hrad Malbork (priame vlaky z Gdansk Główny)</div></div>
+      <div class="day"><div class="d">Št 23. júl</div><div class="note">Helský polostrov — tulene, maják a pláže (vlak alebo letný prievoz)</div></div>
+      <div class="day"><div class="d">Pi 24. júl</div><div class="note">Posledné doobedie v starom meste, jantár na Mariackej · odchod</div></div>
     </div>
     <div class="callout tip reveal">
       <h3>✓ Ťahák</h3>
       <ul class="clean">
-        <li><strong>Po 29. jún:</strong> Múzeum 2. sv. vojny, Múzeum emigrácie aj celá trasa Malborku sú zatvorené/obmedzené — ideálne na <strong>Helský polostrov</strong>, pláže, Sopoty alebo ECS (ktoré <em>v pondelok otvorené je</em>).</li>
-        <li><strong>Ut 30. jún:</strong> <strong>Múzeum 2. sv. vojny je zdarma</strong> a je to skvelé využitie dňa — len nezabudnite, že ECS je v utorok zatvorené.</li>
-        <li><strong>St 1. júl:</strong> Múzeum emigrácie je zdarma; ale začína Open'er — večer si nechajte pokojný, alebo buďte mimo mesta.</li>
-        <li><strong>Št 2. júl:</strong> keď je Open'er v plnom prúde, deň v <strong>Malborku alebo Gdansku</strong> je najpohodovejší spôsob, ako ho stráviť (alebo je to váš deň odchodu).</li>
+        <li><strong>Po 20. júl:</strong> Múzeum 2. sv. vojny aj Múzeum emigrácie sú zatvorené a Malbork má len obmedzenú trasu — ideálne na <strong>Sopoty</strong>, pláže, Gdyniu alebo <strong>ECS</strong> (ktoré <em>v pondelok otvorené je</em>).</li>
+        <li><strong>Ut 21. júl:</strong> <strong>Múzeum 2. sv. vojny je zdarma</strong> a je to skvelé využitie dňa — len nezabudnite, že ECS je v utorok zatvorené.</li>
+        <li><strong>St 22. – Št 23.:</strong> veľké výlety (Malbork, Hel) — cez leto si vstupenky aj spoje <strong>rezervujte vopred</strong>.</li>
+        <li><strong>Pi 24. júl:</strong> nechajte si pokojné doobedie na jantár na Mariackej a poslednú kávu pri Motławe pred odchodom.</li>
       </ul>
     </div>
   </section>
@@ -612,27 +663,27 @@
     <h2 class="sec reveal"><span class="ico">🍽️</span> Jedlo a praktické tipy</h2>
 
     <h3 class="reveal">Čo jesť</h3>
-    <p class="reveal">Toto je kraj Baltu a <strong>Kašubov</strong>, takže stavte na more: čerstvé a údené ryby (sleď/<em>śledź</em>, treska, slávne stánky s údenými rybami na Heli), rybacia polievka a prímorské bary s vyprážanými rybami. Vnútrozemská klasika je tiež všade — <strong>pirohy</strong> (pierogi), <em>żurek</em> (kyslá ražná polievka), <em>placki ziemniaczane</em> (zemiakové placky) a výdatné pečené mäso. Na lacný, autentický obed vhodný pre rodičov nájdite <strong>bar mleczny</strong> (mliečny bar). Typický nápoj Gdanska je <strong>Goldwasser</strong>, bylinný likér s lupienkami zlata.</p>
+    <p class="reveal">Toto je kraj Baltu a <strong>Kašubov</strong>, takže stavte na more: čerstvé a údené ryby (sleď/<em>śledź</em>, treska, slávne stánky s údenými rybami na Heli), rybacia polievka a prímorské bary s vyprážanými rybami. Vnútrozemská klasika je tiež všade — <strong>pirohy</strong> (pierogi), <em>żurek</em> (kyslá ražná polievka), <em>placki ziemniaczane</em> (zemiakové placky) a výdatné pečené mäso. Na lacný, autentický obed nájdite <strong>bar mleczny</strong> (mliečny bar). Typický nápoj Gdanska je <strong>Goldwasser</strong>, bylinný likér s lupienkami zlata — pekný večerný prípitok vo dvojici.</p>
 
     <h3 class="reveal">Peniaze a platby</h3>
     <p class="reveal">V Poľsku sa platí <strong>zlotým (PLN)</strong>, nie eurom. Platby kartou (vrátane bezkontaktných a telefónom) berú takmer všade; trochu hotovosti si noste na trhové stánky, menšie rybie bary a občasný lístkový automat.</p>
 
     <h3 class="reveal">Počasie a čo si zbaliť</h3>
-    <p class="reveal">Koniec júna pri Balte býva príjemne teplý, ale premenlivý — rátajte zhruba s <strong>18–25 °C</strong> cez deň, chladnejším morským vánkom a možnosťou prehánky. Zbaľte si <strong>vrstvy oblečenia, ľahkú pršiplášť, pohodlnú obuv na chôdzu, opaľovací krém a klobúk</strong>, plus plavky (Balt je osviežujúci — čiže studený!). <em>Deň-dva pred odletom si skontrolujte aktuálnu predpoveď.</em></p>
+    <p class="reveal">Koniec júla pri Balte býva príjemne teplý — rátajte zhruba s <strong>20–26 °C</strong> cez deň, s chladnejším morským vánkom večer a možnosťou letnej prehánky. More je v tomto čase najznesiteľnejšie, no stále svieže. Zbaľte si <strong>ľahké vrstvy, pršiplášť do dažďa, pohodlnú obuv na chôdzu, opaľovací krém a klobúk</strong>, plus plavky. <em>Deň-dva pred odletom si skontrolujte aktuálnu predpoveď.</em></p>
 
-    <h3 class="reveal">Tipy na pohodové tempo a pre rodiny</h3>
+    <h3 class="reveal">Tipy na pohodové tempo pre dvoch</h3>
     <ul class="clean reveal">
-      <li>Spojte jeden „veľký" deň (Gdansk, Malbork) s jedným „pomalým" (nábrežie Gdyne, Sopoty), aby rodičia zostali svieži.</li>
-      <li>Múzeá ako Múzeum 2. sv. vojny a ECS znamenajú veľa státia a chôdze — využite šatne, doprajte si prestávky v kaviarni a zvážte audio sprievodcov, aby ste šli vlastným tempom.</li>
-      <li>Na Múzeum 2. sv. vojny a Malbork si rezervujte časové vstupenky online, najmä cez festivalový víkend.</li>
-      <li>Vlak SKM, mólá a promenády sú väčšinou rovinaté a bezbariérové; väčšie staromestské dlažby v Gdansku si vyžadujú rozumnú obuv.</li>
+      <li>Spojte jeden „veľký" deň (múzeá, Malbork) s jedným „pomalým" (staré mesto, Sopoty), aby ste zostali svieži.</li>
+      <li>Múzeá ako Múzeum 2. sv. vojny a ECS znamenajú veľa chôdze — doprajte si prestávky v kaviarni a zvážte audio sprievodcov, aby ste šli vlastným tempom.</li>
+      <li>Na Múzeum 2. sv. vojny a Malbork si rezervujte časové vstupenky online, najmä cez víkend.</li>
+      <li>Vlak SKM, mólá a promenády sú väčšinou rovinaté a bezbariérové; staromestské dlažby v Gdansku si vyžadujú rozumnú obuv.</li>
     </ul>
   </section>
 
   <!-- DALSI KROK -->
   <div class="next reveal">
     <h2>Pripravení na itinerár deň po dni?</h2>
-    <p>Tento sprievodca je menu — ďalej z neho viem spraviť kompletný <strong>8-dňový plán (25. jún – 2. júl)</strong>, ktorý zaradí každú atrakciu do správneho dňa podľa otváracích hodín, dní zatvorenia a davov na Open'eri, s časmi vlakov a pohodovým, no naplneným rytmom pre rodinu. Stačí povedať — a dať vedieť, či chcete ísť na Open'er, alebo plánovať okolo neho.</p>
+    <p>Tento sprievodca je menu — ďalej z neho viem spraviť kompletný <strong>6-dňový plán (19.–24. júl)</strong>, ktorý zaradí každú atrakciu do správneho dňa podľa otváracích hodín a dní zatvorenia, s časmi vlakov a pohodovým, no naplneným rytmom pre dvoch. Stačí povedať.</p>
   </div>
   </div><!-- /#tab-guide -->
 
@@ -640,7 +691,7 @@
   <div id="tab-vote" class="tabpane" hidden>
     <section class="vote-head">
       <h2 class="sec"><span class="ico">🗳️</span> Čo chce kto vidieť</h2>
-      <p class="sub">Každý zadá svoje meno a zaškrtne, čo chce vidieť. Výsledky sa aktualizujú naživo na všetkých zariadeniach. Hlasovať môže max 5 ľudí.</p>
+      <p class="sub">Každý z vás zadá svoje meno a zaškrtne, čo chce vidieť. Výsledky sa aktualizujú naživo na oboch zariadeniach. Hlasovať môžu <strong>2 ľudia</strong>.</p>
     </section>
 
     <div id="vote-setup" class="callout warn" hidden>
@@ -652,7 +703,7 @@
       <div class="card votecard">
         <h3>Tvoj výber</h3>
         <label class="fld" for="voter-name">Meno <span class="req">*</span>
-          <input id="voter-name" type="text" maxlength="24" placeholder="napr. Mama, Andy, brat…" autocomplete="off">
+          <input id="voter-name" type="text" maxlength="24" placeholder="vaše meno…" autocomplete="off">
         </label>
         <p id="cap-note" class="meta"></p>
         <div id="options"></div>
@@ -663,7 +714,7 @@
       </div>
 
       <div class="card">
-        <h3>Výsledky naživo <span id="voter-count" class="pill">0/5</span></h3>
+        <h3>Výsledky naživo <span id="voter-count" class="pill">0/2</span></h3>
         <p id="voters-list" class="meta">Zatiaľ nikto nehlasoval — buď prvý!</p>
         <div id="results"><p class="muted-note">Výsledky sa zobrazia hneď po prvom hlase.</p></div>
         <div id="consensus" class="consensus empty"></div>
@@ -676,34 +727,34 @@
         <li>Choď na <a href="https://console.firebase.google.com" target="_blank" rel="noopener">console.firebase.google.com</a> a vytvor nový projekt (zdarma).</li>
         <li>V menu <strong>Build → Realtime Database → Create database</strong>, zvoľ región (Europe) a <strong>Start in test mode</strong>.</li>
         <li>V <strong>Project settings (⚙) → Your apps</strong> pridaj <strong>Web app (&lt;/&gt;)</strong> a skopíruj hodnoty <code>apiKey</code>, <code>authDomain</code>, <code>databaseURL</code>, <code>projectId</code>, <code>appId</code>.</li>
-        <li>V tomto HTML súbore ich vlož do bloku <code>firebaseConfig</code> (nahraď <code>VLOZ_SEM</code>) a nahraj súbor znova na pollakovci.live.</li>
-        <li>(Voliteľné) V <strong>Realtime Database → Rules</strong> môžeš pre rýchle rodinné hlasovanie ponechať:</li>
+        <li>V tomto HTML súbore ich vlož do bloku <code>firebaseConfig</code> (nahraď <code>VLOZ_SEM</code>) a nahraj súbor znova na svoju stránku.</li>
+        <li>(Voliteľné) V <strong>Realtime Database → Rules</strong> môžeš pre rýchle hlasovanie ponechať:</li>
       </ol>
       <pre>{
   "rules": {
-    "pollakovci": { ".read": true, ".write": true }
+    "harnoczovci": { ".read": true, ".write": true }
   }
 }</pre>
-      <p class="muted-note">Pozn.: testovacie pravidlá sú otvorené (ktokoľvek s odkazom môže zapisovať). Pre súkromný rodinný odkaz to stačí; neskôr sa to dá zamknúť prihlásením.</p>
+      <p class="muted-note">Pozn.: testovacie pravidlá sú otvorené (ktokoľvek s odkazom môže zapisovať). Pre súkromný odkaz to stačí; neskôr sa to dá zamknúť prihlásením.</p>
     </details>
   </div><!-- /#tab-vote -->
 
   <!-- ZDROJE -->
   <footer id="sources">
     <h3>Zdroje a oficiálne odkazy</h3>
-    <p>Hodiny, ceny a podujatia boli overené v júni 2026; pred cestou si vždy potvrďte na oficiálnych stránkach.</p>
+    <p>Hodiny, ceny a spoje boli overené v júli 2026; pred cestou si vždy potvrďte na oficiálnych stránkach.</p>
     <ul class="clean">
-      <li>Festival Open'er (zostava a vstupenky): <a href="https://opener.pl/en">opener.pl/en</a></li>
       <li>Múzeum 2. svetovej vojny (hodiny): <a href="https://muzeum1939.pl/en/visit-and-tickets/wwii-museum-visit/opening-hours">muzeum1939.pl</a></li>
       <li>Európske centrum Solidarity (hodiny): <a href="https://ecs.gda.pl/en/plan-your-visit/opening-hours/">ecs.gda.pl</a></li>
       <li>Hrad Malbork (hodiny a vstupenky): <a href="https://zamek.malbork.pl/en/opening-hours/">zamek.malbork.pl</a></li>
       <li>Akvárium Gdynia (vstupenky): <a href="https://akwarium.gdynia.pl/en/tickets/">akwarium.gdynia.pl</a></li>
-      <li>Prievoz/vlak Gdynia ↔ Hel: <a href="https://hola.gdynia.pl/en/gdynia-and-hel-trip-ferry-train/">hola.gdynia.pl</a></li>
+      <li>Prievoz/vlak na Hel: <a href="https://hola.gdynia.pl/en/gdynia-and-hel-trip-ferry-train/">hola.gdynia.pl</a></li>
       <li>Vlaky SKM Trojmestie (návod a ceny): <a href="https://findingpoland.com/skm-train-gdansk-tricity/">findingpoland.com</a></li>
-      <li>Prehľad atrakcií Gdyne: <a href="https://www.tripadvisor.com/Attractions-g274726-Activities-Gdynia_Pomerania_Province_Northern_Poland.html">Tripadvisor — Gdynia</a></li>
+      <li>Staré mesto Gdansk (prehľad): <a href="https://www.tripadvisor.com/Attractions-g274725-Activities-Gdansk_Pomerania_Province_Northern_Poland.html">Tripadvisor — Gdansk</a></li>
       <li>Výlety z Gdanska: <a href="https://www.sunshineseeker.com/destinations/day-trips-from-gdansk/">sunshineseeker.com</a></li>
     </ul>
-    <p style="margin-top:18px;">Vytvorené pre rodinný výlet andyho · 25. jún – 2. júl 2026 · Krásny pobyt pri Balte! 🌊</p>
+    <p style="margin-top:14px;">Fotografie: Wikimedia Commons (licencie Creative Commons / verejná doména).</p>
+    <p style="margin-top:14px;">Vytvorené pre výlet Harnóczovcov · 19.–24. júl 2026 · Krásny pobyt pri Balte! 🌊</p>
   </footer>
 
 </div>
@@ -713,8 +764,8 @@
 
   // --- Big translucent "ghost" titles behind section headings ---
   (function(){
-    var GH={orient:"Trojmestie",opener:"Opener",getting:"Vlaky",gdynia:"Gdynia",sopot:"Sopoty",
-            gdansk:"Gdansk",daytrips:"Okolie",hours:"Hodiny",whichday:"Plan",food:"Jedlo"};
+    var GH={orient:"Trojmestie",mapa:"Mapa",getting:"Vlaky",gdansk:"Gdansk",sopot:"Sopoty",
+            gdynia:"Gdynia",daytrips:"Výlety",hours:"Hodiny",whichday:"Plán",food:"Jedlo"};
     Object.keys(GH).forEach(function(id){
       var s=document.getElementById(id);
       if(s){var g=document.createElement('span');g.className='ghost';g.textContent=GH[id];
@@ -759,6 +810,7 @@
         var shown=panes[b.dataset.tab];
         if(shown){shown.querySelectorAll('.reveal').forEach(function(el){el.classList.add('in');});}
         try{bar.scrollIntoView({behavior:'smooth',block:'start'});}catch(e){}
+        if(window._trojmap && b.dataset.tab==='guide'){setTimeout(function(){window._trojmap.invalidateSize();},60);}
         onScroll();
       });
     });
@@ -780,19 +832,16 @@ const firebaseConfig = {
   projectId:   "vylet-a3dac",
   appId:       "1:476134611563:web:f991bf8c9df28312da6f2e"
 };
-const MAX_VOTERS = 5;
+const MAX_VOTERS = 2;
+const DB_PATH = "harnoczovci";
 
 const ATTRACTIONS = [
-  { city:"Gdynia", items:[
-    { id:"gdy-molo",       label:"Južné mólo a nábrežie" },
-    { id:"gdy-akvarium",   label:"Akvárium Gdynia" },
-    { id:"gdy-lode",       label:"Múzejné lode (Dar Pomorza, ORP Błyskawica)" },
-    { id:"gdy-emigracia",  label:"Múzeum emigrácie" },
-    { id:"gdy-lanovka",    label:"Lanovka Kamienna Góra" },
-    { id:"gdy-orlowo",     label:"Útes a mólo Orłowo" },
-    { id:"gdy-kepa",       label:"Rezervácia Kępa Redłowska" },
-    { id:"gdy-experyment", label:"Centrum vedy Experyment" },
-    { id:"gdy-muzeum",     label:"Mestské múzeum Gdyne" }
+  { city:"Gdansk", items:[
+    { id:"gda-staremesto",  label:"Staré mesto a Dlhé trhovisko" },
+    { id:"gda-mariacka",    label:"Ulica Mariacka a jantár" },
+    { id:"gda-wwii",        label:"Múzeum 2. svetovej vojny" },
+    { id:"gda-ecs",         label:"Európske centrum Solidarity (ECS)" },
+    { id:"gda-westerplatte",label:"Westerplatte" }
   ]},
   { city:"Sopoty", items:[
     { id:"sop-molo",     label:"Mólo v Sopotoch" },
@@ -801,21 +850,19 @@ const ATTRACTIONS = [
     { id:"sop-plaz",     label:"Pláž v Sopotoch" },
     { id:"sop-koncert",  label:"Koncert (Opera Leśna / Ergo Arena)" }
   ]},
-  { city:"Gdansk", items:[
-    { id:"gda-staremesto",  label:"Staré mesto a Dlhé trhovisko" },
-    { id:"gda-wwii",        label:"Múzeum 2. svetovej vojny" },
-    { id:"gda-ecs",         label:"Európske centrum Solidarity (ECS)" },
-    { id:"gda-westerplatte",label:"Westerplatte" },
-    { id:"gda-mariacka",    label:"Ulica Mariacka a jantár" }
+  { city:"Gdynia", items:[
+    { id:"gdy-molo",       label:"Južné mólo a nábrežie" },
+    { id:"gdy-lode",       label:"Múzejné lode (Dar Pomorza, ORP Błyskawica)" },
+    { id:"gdy-akvarium",   label:"Akvárium Gdynia" },
+    { id:"gdy-emigracia",  label:"Múzeum emigrácie" },
+    { id:"gdy-lanovka",    label:"Lanovka Kamienna Góra" },
+    { id:"gdy-orlowo",     label:"Útes a mólo Orłowo" }
   ]},
   { city:"Výlety", items:[
     { id:"vyl-malbork",   label:"Hrad Malbork" },
     { id:"vyl-hel",       label:"Helský polostrov a Fokarium" },
     { id:"vyl-stutthof",  label:"Pamätník Stutthof" },
     { id:"vyl-slowinski", label:"Národný park Słowiński a Łeba" }
-  ]},
-  { city:"Festival", items:[
-    { id:"fest-opener", label:"Festival Open'er" }
   ]}
 ];
 
@@ -866,7 +913,7 @@ async function initFB(){
 
   var app = mod.initializeApp(firebaseConfig);
   var db  = mod.getDatabase(app);
-  var votesRef = mod.ref(db, "pollakovci/votes");
+  var votesRef = mod.ref(db, DB_PATH + "/votes");
   var latest = {}, prefilled = false;
 
   mod.onValue(votesRef, function(snap){ latest = snap.val() || {}; render(); },
@@ -878,13 +925,13 @@ async function initFB(){
     var key = slug(name);
     var isNew = !(latest && latest[key]);
     var count = latest ? Object.keys(latest).length : 0;
-    if(isNew && count >= MAX_VOTERS){ msg("Hlasovať môže najviac " + MAX_VOTERS + " ľudí — zoznam je plný.", true); return; }
+    if(isNew && count >= MAX_VOTERS){ msg("Hlasovať môžu najviac " + MAX_VOTERS + " ľudia — zoznam je plný.", true); return; }
     var picks = {};
     document.querySelectorAll("#options input[type=checkbox]:checked").forEach(function(c){ picks[c.value]=true; });
     if(Object.keys(picks).length===0){ msg("Vyber aspoň jednu atrakciu.", true); return; }
     try{
-      await mod.set(mod.ref(db, "pollakovci/votes/" + key), { name:name, picks:picks, ts:Date.now() });
-      try{ localStorage.setItem("pollakovci_voter", name); }catch(e){}
+      await mod.set(mod.ref(db, DB_PATH + "/votes/" + key), { name:name, picks:picks, ts:Date.now() });
+      try{ localStorage.setItem("harnoczovci_voter", name); }catch(e){}
       msg("Uložené! Ďakujeme, " + name + ". Výber môžeš kedykoľvek zmeniť.", false);
     }catch(e){ msg("Uloženie zlyhalo: " + e.message, true); }
   });
@@ -898,7 +945,7 @@ async function initFB(){
     $("#voters-list").textContent = n ? ("Hlasovali: " + names.join(", ")) : "Zatiaľ nikto nehlasoval — buď prvý!";
 
     if(!prefilled){
-      var stored=null; try{ stored=localStorage.getItem("pollakovci_voter"); }catch(e){}
+      var stored=null; try{ stored=localStorage.getItem("harnoczovci_voter"); }catch(e){}
       if(stored){
         $("#voter-name").value = stored;
         var mine = latest[slug(stored)];
@@ -944,7 +991,7 @@ async function initFB(){
       var all=rows.filter(function(r){ return r.c===n; });
       if(all.length){
         cons.className="consensus";
-        cons.innerHTML='<strong>🎯 Na týchto sa zhodli všetci ('+n+'):</strong> '+all.map(function(r){return esc(label[r.id]);}).join(", ");
+        cons.innerHTML='<strong>🎯 Na týchto sa zhodli obaja:</strong> '+all.map(function(r){return esc(label[r.id]);}).join(", ");
       } else {
         var top=rows[0].c;
         var leaders=rows.filter(function(r){ return r.c===top; });
@@ -954,6 +1001,57 @@ async function initFB(){
     } else { cons.className="consensus empty"; cons.innerHTML=""; }
   }
 }
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+(function(){
+  if(typeof L==='undefined') return;               // Leaflet nenačítaný (offline) → mapa ostane skrytá
+  var el=document.getElementById('leafmap'); if(!el) return;
+
+  var PINS=[
+    {name:"Staré mesto a Długi Targ",    lat:54.3486, lng:18.6530, cat:"home",   big:true, emoji:"🏛️", tag:"Vaša základňa", href:"#gdansk"},
+    {name:"Ulica Mariacka a jantár",     lat:54.3497, lng:18.6546, cat:"gdansk", emoji:"🟠", tag:"Jantárová ulička", href:"#gdansk"},
+    {name:"Múzeum 2. svetovej vojny",    lat:54.3597, lng:18.6562, cat:"gdansk", emoji:"⚔️", tag:"Utorok zdarma", href:"#gdansk"},
+    {name:"Európske centrum Solidarity", lat:54.3620, lng:18.6487, cat:"gdansk", emoji:"✊", tag:"Zatvorené v utorok", href:"#gdansk"},
+    {name:"Westerplatte",                lat:54.4076, lng:18.6690, cat:"gdansk", emoji:"🎖️", tag:"Pamätník 1939 · loďou po Motławe", href:"#gdansk"},
+    {name:"Mólo v Sopotoch",             lat:54.4479, lng:18.5699, cat:"sopot",  emoji:"🏖️", tag:"Najdlhšie drevené mólo v Európe", href:"#sopot"},
+    {name:"Krivý dom (Krzywy Domek)",    lat:54.4413, lng:18.5661, cat:"sopot",  emoji:"🏠", tag:"Na ulici Monciak", href:"#sopot"},
+    {name:"Južné mólo a Dar Pomorza",    lat:54.5190, lng:18.5498, cat:"gdynia", emoji:"⚓", tag:"Mólo a múzejné lode", href:"#gdynia"},
+    {name:"Akvárium Gdynia",             lat:54.5199, lng:18.5486, cat:"gdynia", emoji:"🐟", tag:"Dobré do dažďa", href:"#gdynia"},
+    {name:"Lanovka Kamienna Góra",       lat:54.5122, lng:18.5486, cat:"gdynia", emoji:"🚡", tag:"Vyhliadka na prístav", href:"#gdynia"},
+    {name:"Orłowo — útes a mólo",        lat:54.4838, lng:18.5620, cat:"gdynia", emoji:"🌲", tag:"Pokojnejšia pláž", href:"#gdynia"},
+    {name:"Hrad Malbork",                lat:54.0398, lng:19.0277, cat:"trip",   big:true, emoji:"🏰", tag:"Najväčší tehlový hrad na svete · vlak z Gdansk Główny", href:"#daytrips"},
+    {name:"Hel — Fokarium",              lat:54.6076, lng:18.8016, cat:"trip",   big:true, emoji:"🦭", tag:"Tulene, maják a pláže · vlak alebo prievoz", href:"#daytrips"}
+  ];
+
+  function escp(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c];});}
+
+  var map=L.map('leafmap',{scrollWheelZoom:false});
+  window._trojmap=map;
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{
+    maxZoom:19, subdomains:'abcd',
+    attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
+  }).addTo(map);
+
+  var pts=[];
+  PINS.forEach(function(p){
+    var cls='pin pin-'+p.cat+(p.big?' big':'')+(p.cat==='home'?' pin-pulse':'');
+    var sz=p.big?34:30;
+    var icon=L.divIcon({className:'', html:'<div class="'+cls+'">'+p.emoji+'</div>',
+      iconSize:[sz,sz], iconAnchor:[sz/2,sz/2], popupAnchor:[0,-(sz/2)-1]});
+    L.marker([p.lat,p.lng],{icon:icon,title:p.name}).addTo(map)
+      .bindPopup('<div class="pop"><strong>'+escp(p.name)+'</strong><span class="pop-tag">'+escp(p.tag)+'</span>'+
+                 '<a class="pop-link" href="'+p.href+'">Zobraziť v sprievodcovi →</a></div>');
+    pts.push([p.lat,p.lng]);
+  });
+
+  map.fitBounds(pts,{padding:[42,42]});
+  // Zoom kolieskom až po kliknutí do mapy (nekradne skrolovanie stránky)
+  map.on('click',function(){map.scrollWheelZoom.enable();});
+  map.on('mouseout',function(){map.scrollWheelZoom.disable();});
+  setTimeout(function(){map.invalidateSize();},350);
+})();
 </script>
 </body>
 </html>
