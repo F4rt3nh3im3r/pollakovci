@@ -11,14 +11,15 @@
   --accent:#8c2f2f; --accent-soft:#f6ece9; --gold:#9a7b3f;
   --ok:#2f6b4f; --ok-soft:#e9f1ec; --warn:#8a5a12; --warn-soft:#fcf3e2;
   --mA:#e2603a; --mB:#2f6fb0;
-  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
-  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue","Noto Sans",Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
   --shadow:0 1px 2px rgba(40,25,15,.05),0 8px 24px -12px rgba(40,25,15,.16);
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--serif);
-     font-size:17px;line-height:1.62;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+     font-size:16.5px;line-height:1.6;-webkit-text-size-adjust:100%;
+     -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 
 /* ---------- top bar ---------- */
 .topbar{position:sticky;top:0;z-index:50;background:rgba(251,248,244,.93);
@@ -27,9 +28,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--serif);
 .brand{font-family:var(--sans);font-weight:800;font-size:13px;letter-spacing:.13em;
   text-transform:uppercase;color:var(--accent);text-decoration:none;white-space:nowrap;padding:14px 0}
 .brand span{color:var(--muted);font-weight:600}
-nav{margin-left:auto;overflow-x:auto;scrollbar-width:none;
-  -webkit-mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 22px),transparent 100%);
-  mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 22px),transparent 100%)}
+nav{margin-left:auto;overflow-x:auto;scrollbar-width:none}
 nav::-webkit-scrollbar{display:none}
 nav ul{display:flex;gap:2px;list-style:none;margin:0;padding:0}
 nav a{display:block;font-family:var(--sans);font-size:13.5px;font-weight:600;color:var(--muted);
@@ -43,13 +42,13 @@ nav a.on{color:var(--accent);border-bottom-color:var(--accent)}
 header.page{max-width:1080px;margin:0 auto;padding:30px 20px 6px}
 .eyebrow{font-family:var(--sans);font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;
   color:var(--accent);font-weight:800}
-h1{font-size:clamp(30px,5vw,44px);line-height:1.1;margin:8px 0 6px;letter-spacing:-.015em}
-.lede{color:var(--muted);font-size:18px;margin:0 0 4px;max-width:62ch}
+h1{font-size:clamp(27px,4.4vw,39px);line-height:1.16;margin:8px 0 6px;letter-spacing:-.022em;font-weight:800}
+.lede{color:var(--muted);font-size:17px;margin:0 0 4px;max-width:62ch}
 
 main{max-width:1080px;margin:0 auto;padding:14px 20px 70px}
 h2{font-family:var(--sans);font-size:12px;letter-spacing:.18em;text-transform:uppercase;
   color:var(--accent);font-weight:800;margin:42px 0 14px;padding-bottom:7px;border-bottom:1px solid var(--line)}
-h3{font-size:21px;margin:30px 0 8px}
+h3{font-size:19.5px;font-weight:700;letter-spacing:-.012em;margin:30px 0 8px}
 p{margin:0 0 14px}
 a{color:var(--accent);text-underline-offset:3px;text-decoration-thickness:1px}
 a:hover{color:#5f1c1c}
@@ -61,17 +60,17 @@ a:hover{color:#5f1c1c}
 .tl::before{content:"";position:absolute;left:74px;top:12px;bottom:12px;width:2px;
   background:linear-gradient(var(--line),var(--line));}
 .tl>li{position:relative;padding:0 0 22px 106px;min-height:34px}
-.time{position:absolute;left:0;top:2px;width:62px;text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace;
+.time{position:absolute;left:0;top:2px;width:62px;text-align:right;font-family:var(--mono);
   font-size:13.5px;font-weight:700;color:var(--accent)}
 .dot{position:absolute;left:64px;top:5px;width:22px;height:22px;border-radius:50%;
   background:var(--card);border:2px solid var(--line);display:grid;place-items:center;font-size:12px}
-.tl h4{margin:0 0 3px;font-size:18px;font-weight:700;line-height:1.35}
+.tl h4{margin:0 0 3px;font-size:17px;font-weight:700;line-height:1.38;letter-spacing:-.005em}
 .tl p{margin:0 0 8px;color:var(--muted);font-size:15.5px}
 .tl p:last-child{margin-bottom:0}
 
 /* ---------- metro block ---------- */
 .metro{background:var(--card);border:1px solid var(--line);border-radius:10px;
-  padding:12px 14px;margin:10px 0 4px;font-size:15px;box-shadow:var(--shadow)}
+  padding:12px 14px;margin:10px 0 4px;font-size:15.5px;box-shadow:var(--shadow)}
 .metro p{margin:0 0 7px;color:var(--ink)}
 .metro p:last-child{margin-bottom:0}
 .ln{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;color:#fff;
@@ -94,8 +93,8 @@ a:hover{color:#5f1c1c}
 /* ---------- ticket card ---------- */
 .ticket{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--ok);
   border-radius:8px;padding:16px 18px;margin:16px 0;box-shadow:var(--shadow)}
-.ticket h3{margin:0 0 2px;font-size:20px}
-.when{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:16px;font-weight:700;color:var(--accent);margin:0 0 10px}
+.ticket h3{margin:0 0 2px;font-size:18.5px}
+.when{font-family:var(--mono);font-size:16px;font-weight:700;color:var(--accent);margin:0 0 10px}
 .ticket dl{display:grid;grid-template-columns:140px 1fr;gap:6px 14px;margin:0;font-size:15.5px}
 .ticket dt{color:var(--muted);font-family:var(--sans);font-size:13px;font-weight:600;padding-top:2px}
 .ticket dd{margin:0}
@@ -107,7 +106,7 @@ a:hover{color:#5f1c1c}
 .daycard:hover{transform:translateY(-2px);border-color:var(--accent);box-shadow:0 10px 28px -12px rgba(140,47,47,.35)}
 .daycard .d{font-family:var(--sans);font-size:11px;letter-spacing:.16em;text-transform:uppercase;
   color:var(--muted);font-weight:800}
-.daycard .t{font-size:19px;font-weight:700;margin:5px 0 4px;color:var(--accent)}
+.daycard .t{font-size:18px;font-weight:700;letter-spacing:-.01em;margin:5px 0 4px;color:var(--accent)}
 .daycard .s{font-size:14.5px;color:var(--muted);line-height:1.45}
 
 /* ---------- tables ---------- */
@@ -117,7 +116,7 @@ th{text-align:left;font-family:var(--sans);font-size:10.5px;letter-spacing:.11em
   color:var(--muted);font-weight:800;padding:9px 11px;border-bottom:2px solid var(--line)}
 td{padding:9px 11px;border-bottom:1px solid var(--line);vertical-align:top}
 tr:last-child td{border-bottom:none}
-td.num{text-align:right;white-space:nowrap;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13.5px}
+td.num{text-align:right;white-space:nowrap;font-family:var(--mono);font-size:13.5px}
 tr.tot td{font-weight:800;border-top:2px solid var(--ink)}
 .closed{color:var(--accent);font-weight:800}
 
@@ -128,7 +127,7 @@ ul.check li::before{content:"☐";position:absolute;left:0;top:-2px;font-size:18
 .tag{display:inline-block;font-family:var(--sans);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
   font-weight:800;padding:3px 9px;border-radius:99px;background:var(--accent-soft);color:var(--accent);vertical-align:2px}
 .tag.g{background:var(--ok-soft);color:var(--ok)}
-code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13.5px;background:#f0ebe4;padding:2px 6px;border-radius:4px}
+code{font-family:var(--mono);font-size:13.5px;background:#f0ebe4;padding:2px 6px;border-radius:4px}
 .metro-svg{width:100%;height:auto;background:var(--card);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow)}
 .pager{display:flex;justify-content:space-between;gap:12px;margin:46px 0 0;padding-top:20px;border-top:1px solid var(--line)}
 .pager a{font-family:var(--sans);font-weight:700;font-size:14.5px;text-decoration:none;
@@ -138,9 +137,12 @@ footer{max-width:1080px;margin:0 auto;padding:0 20px 50px;color:var(--muted);fon
 .toplink{display:inline-block;margin-top:8px;font-family:var(--sans);font-size:13px;font-weight:600}
 
 @media(max-width:640px){
-  body{font-size:16px}
+  body{font-size:16px;line-height:1.58}
   .topinner{padding:0 12px;gap:10px}
   .brand{font-size:11.5px;padding:12px 0}
+  .brand span{display:none}
+  nav{-webkit-mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 20px),transparent 100%);
+      mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 20px),transparent 100%)}
   nav a{padding:13px 9px;font-size:13px}
   header.page,main,footer{padding-left:14px;padding-right:14px}
   .tl::before{left:8px}
