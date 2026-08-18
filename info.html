@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Praktické info — metro, ceny, rozpočet</title>
+<meta name="description" content="Schéma oboch liniek metra, ceny lístkov, rozpočet celej cesty a veci, ktoré je dobré vedieť vopred.">
+<style>
+:root{
+  --ink:#1a1a1a; --muted:#5f5b57; --line:#e0dad2; --bg:#fbf8f4; --card:#fff;
+  --accent:#8c2f2f; --accent-soft:#f6ece9; --gold:#9a7b3f;
+  --ok:#2f6b4f; --ok-soft:#e9f1ec; --warn:#8a5a12; --warn-soft:#fcf3e2;
+  --mA:#e2603a; --mB:#2f6fb0;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --shadow:0 1px 2px rgba(40,25,15,.05),0 8px 24px -12px rgba(40,25,15,.16);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--serif);
+     font-size:17px;line-height:1.62;-webkit-text-size-adjust:100%}
+
+/* ---------- top bar ---------- */
+.topbar{position:sticky;top:0;z-index:50;background:rgba(251,248,244,.93);
+  backdrop-filter:saturate(1.6) blur(10px);border-bottom:1px solid var(--line)}
+.topinner{max-width:1080px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:18px}
+.brand{font-family:var(--sans);font-weight:800;font-size:13px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--accent);text-decoration:none;white-space:nowrap;padding:14px 0}
+.brand span{color:var(--muted);font-weight:600}
+nav{margin-left:auto;overflow-x:auto;scrollbar-width:none;
+  -webkit-mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 22px),transparent 100%);
+  mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 22px),transparent 100%)}
+nav::-webkit-scrollbar{display:none}
+nav ul{display:flex;gap:2px;list-style:none;margin:0;padding:0}
+nav a{display:block;font-family:var(--sans);font-size:13.5px;font-weight:600;color:var(--muted);
+  text-decoration:none;padding:15px 13px;border-bottom:3px solid transparent;white-space:nowrap}
+nav a:hover{color:var(--ink);background:rgba(140,47,47,.05)}
+nav a.on{color:var(--accent);border-bottom-color:var(--accent)}
+
+/* ---------- hero ---------- */
+.hero{display:block;width:100%;height:auto;border-bottom:1px solid var(--line)}
+.herowrap{background:#f4e9df}
+header.page{max-width:1080px;margin:0 auto;padding:30px 20px 6px}
+.eyebrow{font-family:var(--sans);font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--accent);font-weight:800}
+h1{font-size:clamp(30px,5vw,44px);line-height:1.1;margin:8px 0 6px;letter-spacing:-.015em}
+.lede{color:var(--muted);font-size:18px;margin:0 0 4px;max-width:62ch}
+
+main{max-width:1080px;margin:0 auto;padding:14px 20px 70px}
+h2{font-family:var(--sans);font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--accent);font-weight:800;margin:42px 0 14px;padding-bottom:7px;border-bottom:1px solid var(--line)}
+h3{font-size:21px;margin:30px 0 8px}
+p{margin:0 0 14px}
+a{color:var(--accent);text-underline-offset:3px;text-decoration-thickness:1px}
+a:hover{color:#5f1c1c}
+.maplink{white-space:nowrap}
+.maplink::after{content:" ↗";font-size:.8em;opacity:.6}
+
+/* ---------- timeline ---------- */
+.tl{list-style:none;margin:16px 0 6px;padding:0;position:relative}
+.tl::before{content:"";position:absolute;left:74px;top:12px;bottom:12px;width:2px;
+  background:linear-gradient(var(--line),var(--line));}
+.tl>li{position:relative;padding:0 0 22px 106px;min-height:34px}
+.time{position:absolute;left:0;top:2px;width:62px;text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace;
+  font-size:13.5px;font-weight:700;color:var(--accent)}
+.dot{position:absolute;left:64px;top:5px;width:22px;height:22px;border-radius:50%;
+  background:var(--card);border:2px solid var(--line);display:grid;place-items:center;font-size:12px}
+.tl h4{margin:0 0 3px;font-size:18px;font-weight:700;line-height:1.35}
+.tl p{margin:0 0 8px;color:var(--muted);font-size:15.5px}
+.tl p:last-child{margin-bottom:0}
+
+/* ---------- metro block ---------- */
+.metro{background:var(--card);border:1px solid var(--line);border-radius:10px;
+  padding:12px 14px;margin:10px 0 4px;font-size:15px;box-shadow:var(--shadow)}
+.metro p{margin:0 0 7px;color:var(--ink)}
+.metro p:last-child{margin-bottom:0}
+.ln{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;color:#fff;
+  font-family:var(--sans);font-weight:800;font-size:12.5px;vertical-align:-4px;margin-right:7px}
+.lnA{background:var(--mA)} .lnB{background:var(--mB)}
+.dir{font-weight:800}
+.metro small{display:block;color:var(--muted);font-size:13.5px;margin-top:5px}
+
+/* ---------- cards / callouts ---------- */
+.box{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--gold);
+  border-radius:8px;padding:14px 17px;margin:18px 0;box-shadow:var(--shadow)}
+.box.warn{border-left-color:var(--warn);background:var(--warn-soft)}
+.box.ok{border-left-color:var(--ok);background:var(--ok-soft)}
+.box.key{border-left-color:var(--accent);background:var(--accent-soft)}
+.box>p:last-child{margin-bottom:0}
+.bt{display:block;font-family:var(--sans);font-size:11px;letter-spacing:.15em;text-transform:uppercase;
+  font-weight:800;margin-bottom:7px;color:var(--gold)}
+.warn .bt{color:var(--warn)} .ok .bt{color:var(--ok)} .key .bt{color:var(--accent)}
+
+/* ---------- ticket card ---------- */
+.ticket{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--ok);
+  border-radius:8px;padding:16px 18px;margin:16px 0;box-shadow:var(--shadow)}
+.ticket h3{margin:0 0 2px;font-size:20px}
+.when{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:16px;font-weight:700;color:var(--accent);margin:0 0 10px}
+.ticket dl{display:grid;grid-template-columns:140px 1fr;gap:6px 14px;margin:0;font-size:15.5px}
+.ticket dt{color:var(--muted);font-family:var(--sans);font-size:13px;font-weight:600;padding-top:2px}
+.ticket dd{margin:0}
+
+/* ---------- day cards on index ---------- */
+.days{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:14px;margin:18px 0 6px}
+.daycard{display:block;background:var(--card);border:1px solid var(--line);border-radius:10px;
+  padding:16px 17px;text-decoration:none;color:inherit;box-shadow:var(--shadow);transition:.16s}
+.daycard:hover{transform:translateY(-2px);border-color:var(--accent);box-shadow:0 10px 28px -12px rgba(140,47,47,.35)}
+.daycard .d{font-family:var(--sans);font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--muted);font-weight:800}
+.daycard .t{font-size:19px;font-weight:700;margin:5px 0 4px;color:var(--accent)}
+.daycard .s{font-size:14.5px;color:var(--muted);line-height:1.45}
+
+/* ---------- tables ---------- */
+.tw{overflow-x:auto;margin:14px 0 18px;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;font-size:15px;min-width:520px;background:var(--card)}
+th{text-align:left;font-family:var(--sans);font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--muted);font-weight:800;padding:9px 11px;border-bottom:2px solid var(--line)}
+td{padding:9px 11px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:none}
+td.num{text-align:right;white-space:nowrap;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13.5px}
+tr.tot td{font-weight:800;border-top:2px solid var(--ink)}
+.closed{color:var(--accent);font-weight:800}
+
+/* ---------- misc ---------- */
+ul.check{list-style:none;padding:0;margin:14px 0}
+ul.check li{position:relative;padding:0 0 9px 30px}
+ul.check li::before{content:"☐";position:absolute;left:0;top:-2px;font-size:18px;color:var(--accent)}
+.tag{display:inline-block;font-family:var(--sans);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  font-weight:800;padding:3px 9px;border-radius:99px;background:var(--accent-soft);color:var(--accent);vertical-align:2px}
+.tag.g{background:var(--ok-soft);color:var(--ok)}
+code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13.5px;background:#f0ebe4;padding:2px 6px;border-radius:4px}
+.metro-svg{width:100%;height:auto;background:var(--card);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow)}
+.pager{display:flex;justify-content:space-between;gap:12px;margin:46px 0 0;padding-top:20px;border-top:1px solid var(--line)}
+.pager a{font-family:var(--sans);font-weight:700;font-size:14.5px;text-decoration:none;
+  background:var(--card);border:1px solid var(--line);border-radius:8px;padding:11px 16px;box-shadow:var(--shadow)}
+.pager a:hover{border-color:var(--accent)}
+footer{max-width:1080px;margin:0 auto;padding:0 20px 50px;color:var(--muted);font-size:13.5px}
+.toplink{display:inline-block;margin-top:8px;font-family:var(--sans);font-size:13px;font-weight:600}
+
+@media(max-width:640px){
+  body{font-size:16px}
+  .topinner{padding:0 12px;gap:10px}
+  .brand{font-size:11.5px;padding:12px 0}
+  nav a{padding:13px 9px;font-size:13px}
+  header.page,main,footer{padding-left:14px;padding-right:14px}
+  .tl::before{left:8px}
+  .tl>li{padding-left:38px}
+  .time{position:static;display:inline-block;width:auto;text-align:left;margin-bottom:2px}
+  .dot{left:0;top:2px;width:18px;height:18px;font-size:10px}
+  .ticket dl{grid-template-columns:1fr;gap:2px 0}
+  .ticket dt{margin-top:8px}
+}
+@media print{
+  .topbar,.pager,.toplink{display:none}
+  body{background:#fff;font-size:11pt}
+  .box,.ticket,.metro,.daycard{box-shadow:none;break-inside:avoid}
+  a{color:#1a1a1a;text-decoration:none}
+  .maplink::after{content:""}
+}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="topinner">
+  <a class="brand" href="index.html">Rím <span>· 22.–25. augusta 2026</span></a>
+  <nav><ul><li><a href="index.html">Prehľad</a></li><li><a href="sobota.html">So · 22. 8.</a></li><li><a href="nedela.html">Ne · 23. 8.</a></li><li><a href="pondelok.html">Po · 24. 8.</a></li><li><a href="utorok.html">Ut · 25. 8.</a></li><li><a href="info.html" class="on">Praktické info</a></li></ul></nav>
+</div></div>
+<div class="herowrap"><svg class="hero" viewBox="0 0 1200 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ilustrácia"><defs>
+<linearGradient id="skyf" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#f5eee9"/><stop offset="1" stop-color="#eae0da"/>
+</linearGradient>
+<linearGradient id="fadef" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#8c2f2f" stop-opacity=".10"/>
+  <stop offset="1" stop-color="#8c2f2f" stop-opacity="0"/>
+</linearGradient>
+</defs><rect width="1200" height="300" fill="url(#skyf)"/><rect y="250" width="1200" height="50" fill="#8c2f2f" opacity=".055"/><g fill="none" stroke="#8c2f2f" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"><circle cx="220" cy="92" r="50" fill="#9a7b3f" opacity=".13" stroke="none"/><circle cx="220" cy="92" r="50" opacity=".45"/><g transform="translate(430,250) scale(0.78)">
+<path d="M-130 0 H130"/>
+<path d="M-116 -22 H116 V-8 q-116 12 -232 0 Z"/>
+<path d="M-96 -16 q18 6 36 0 q18 6 36 0 q18 6 36 0 q18 6 36 0"/>
+<path d="M-110 -22 V-130 H110 V-22"/>
+<path d="M-64 -18 V-118 q0 -46 64 -46 q64 0 64 46 V-18"/>
+<path d="M-86 -30 V-118 M-38 -30 V-112 M38 -30 V-112 M86 -30 V-118"/>
+<path d="M-110 -130 H110 V-146 H-110 Z"/>
+<path d="M-70 -146 L0 -178 L70 -146"/>
+<path d="M-14 -40 q14 -22 28 0"/>
+</g><g transform="translate(760,250) scale(0.72)">
+<path d="M-132 0 H132"/>
+<path d="M-132 0 L-62 -104 H62 L132 0"/>
+<path d="M-124 -13 H124"/>
+<path d="M-116 -26 H116"/>
+<path d="M-108 -39 H108"/>
+<path d="M-100 -52 H100"/>
+<path d="M-93 -65 H93"/>
+<path d="M-85 -78 H85"/>
+<path d="M-77 -91 H77"/>
+<path d="M-69 -104 H69"/>
+<path d="M-118 -22 L-70 -92 M118 -22 L70 -92"/>
+<path d="M-62 -104 H62"/>
+<path d="M-50 -104 V-148 H50 V-104"/>
+<path d="M-30 -104 V-134 a12 16 0 0 1 24 0 V-104" transform="translate(6,0)"/>
+<path d="M-50 -148 H50"/>
+<path d="M-50 -148 V-186 H-22 V-148 M22 -148 V-186 H50 V-148"/>
+<path d="M-50 -186 h28 M22 -186 h28"/>
+<path d="M-36 -186 V-198 M-41 -194 h10 M36 -186 V-198 M31 -194 h10"/>
+<path d="M-40 -170 h8 M32 -170 h8"/>
+</g><g transform="translate(960,250) scale(0.9)">
+<path d="M-16 0 H16 V-8 H-16 Z"/><path d="M-12 -8 H12 V-16 H-12 Z"/>
+<path d="M-8 -16 L-4 -86 H4 L8 -16 Z"/><path d="M-4 -86 L0 -98 L4 -86"/>
+</g><g transform="translate(1090,250) scale(0.95)" opacity="1.0">
+<path d="M0 0 V-46" />
+<path d="M0 -44 q-13 -6 -19 -16" /><path d="M0 -50 q14 -5 20 -15" />
+<path d="M-44 -62 q10 -21 44 -21 q34 0 44 21 q-14 9 -44 9 q-30 0 -44 -9 Z" />
+<path d="M-30 -68 q12 -13 30 -13 q18 0 30 13" />
+</g><g transform="translate(70,250) scale(0.9)" opacity="1.0">
+<path d="M0 0 V-46" />
+<path d="M0 -44 q-13 -6 -19 -16" /><path d="M0 -50 q14 -5 20 -15" />
+<path d="M-44 -62 q10 -21 44 -21 q34 0 44 21 q-14 9 -44 9 q-30 0 -44 -9 Z" />
+<path d="M-30 -68 q12 -13 30 -13 q18 0 30 13" />
+</g><path d="M0 250 H1200" stroke-width="2.5"/></g></svg></div>
+<header class="page">
+  <div class="eyebrow">Praktické info</div>
+  <h1>Metro, ceny, rozpočet a tipy</h1>
+  <p class="lede">Schéma oboch liniek metra, ceny lístkov, rozpočet celej cesty a veci, ktoré je dobré vedieť vopred.</p>
+</header>
+<main>
+
+<h2>Schéma metra — dve linky, jeden prestup</h2>
+<p>Rím má len dve linky, ktoré vás zaujímajú, a <strong>križujú sa na stanici Termini</strong>. Smer sa
+neoznačuje číslom, ale <strong>názvom konečnej stanice</strong> — to je jediné, čo musíte na tabuli
+a na vlaku sledovať.</p>
+
+<svg viewBox="0 0 1320 560" xmlns="http://www.w3.org/2000/svg" class="metro-svg" role="img" aria-label="Schéma liniek metra A a B">
+<rect width="1320" height="560" fill="#fbfaf8"/>
+<style>.st{font:600 15px system-ui,sans-serif;fill:#1a1a1a}.nt{font:12.5px system-ui,sans-serif;fill:#6b6b6b}.hm{font:700 12.5px system-ui,sans-serif;fill:#2f6b4f}.tm{font:700 13px system-ui,sans-serif;letter-spacing:.08em}</style>
+<path d="M238 168 H1126" stroke="#e2603a" stroke-width="9" stroke-linecap="round" fill="none"/>
+<text x="230" y="173" text-anchor="end" class="tm" fill="#e2603a">Battistini ←</text>
+<text x="1134" y="173" class="tm" fill="#e2603a">→ Anagnina</text>
+<circle cx="1030" cy="168" r="8" fill="#fbfaf8" stroke="#e2603a" stroke-width="4"/>
+<g transform="translate(1021,148) rotate(-42)"><text class="st">Termini</text></g>
+<circle cx="914" cy="168" r="8" fill="#fbfaf8" stroke="#e2603a" stroke-width="4"/>
+<g transform="translate(905,148) rotate(-42)"><text class="st">Repubblica</text></g>
+<circle cx="798" cy="168" r="8" fill="#fbfaf8" stroke="#e2603a" stroke-width="4"/>
+<g transform="translate(789,148) rotate(-42)"><text class="st">Barberini</text></g>
+<g transform="translate(805,194) rotate(-42)"><text class="nt" text-anchor="end">Fontána di Trevi</text></g>
+<circle cx="682" cy="168" r="8" fill="#fbfaf8" stroke="#e2603a" stroke-width="4"/>
+<g transform="translate(673,148) rotate(-42)"><text class="st">Spagna</text></g>
+<g transform="translate(689,194) rotate(-42)"><text class="nt" text-anchor="end">Španielske schody</text></g>
+<circle cx="566" cy="168" r="8" fill="#fbfaf8" stroke="#e2603a" stroke-width="4"/>
+<g transform="translate(557,148) rotate(-42)"><text class="st">Flaminio</text></g>
+<g transform="translate(573,194) rotate(-42)"><text class="nt" text-anchor="end">Piazza del Popolo</text></g>
+<circle cx="450" cy="168" r="8" fill="#fbfaf8" stroke="#e2603a" stroke-width="4"/>
+<g transform="translate(441,148) rotate(-42)"><text class="st">Lepanto</text></g>
+<g transform="translate(457,194) rotate(-42)"><text class="nt" text-anchor="end">Anjelský hrad</text></g>
+<circle cx="334" cy="168" r="8" fill="#fbfaf8" stroke="#e2603a" stroke-width="4"/>
+<g transform="translate(325,148) rotate(-42)"><text class="st">Ottaviano</text></g>
+<g transform="translate(341,194) rotate(-42)"><text class="nt" text-anchor="end">Vatikán</text></g>
+<path d="M238 412 H1126" stroke="#2f6fb0" stroke-width="9" stroke-linecap="round" fill="none"/>
+<text x="230" y="417" text-anchor="end" class="tm" fill="#2f6fb0">Laurentina ←</text>
+<text x="1134" y="417" class="tm" fill="#2f6fb0">→ Rebibbia</text>
+<circle cx="1030" cy="412" r="8" fill="#fbfaf8" stroke="#2f6fb0" stroke-width="4"/>
+<g transform="translate(1021,392) rotate(-42)"><text class="st">Termini</text></g>
+<circle cx="914" cy="412" r="8" fill="#fbfaf8" stroke="#2f6fb0" stroke-width="4"/>
+<g transform="translate(905,392) rotate(-42)"><text class="st">Cavour</text></g>
+<circle cx="798" cy="412" r="8" fill="#fbfaf8" stroke="#2f6fb0" stroke-width="4"/>
+<g transform="translate(789,392) rotate(-42)"><text class="st">Colosseo</text></g>
+<g transform="translate(805,438) rotate(-42)"><text class="nt" text-anchor="end">Koloseum, Fórum</text></g>
+<circle cx="682" cy="412" r="8" fill="#fbfaf8" stroke="#2f6fb0" stroke-width="4"/>
+<g transform="translate(673,392) rotate(-42)"><text class="st">Circo Massimo</text></g>
+<circle cx="566" cy="412" r="8" fill="#fbfaf8" stroke="#2f6fb0" stroke-width="4"/>
+<g transform="translate(557,392) rotate(-42)"><text class="st">Piramide</text></g>
+<g transform="translate(573,438) rotate(-42)"><text class="nt" text-anchor="end">vlak z letiska</text></g>
+<circle cx="450" cy="412" r="8" fill="#fbfaf8" stroke="#2f6fb0" stroke-width="4"/>
+<g transform="translate(441,392) rotate(-42)"><text class="st">Garbatella</text></g>
+<circle cx="334" cy="412" r="12" fill="#fbfaf8" stroke="#2f6fb0" stroke-width="5"/>
+<circle cx="334" cy="412" r="4.5" fill="#2f6b4f"/>
+<g transform="translate(325,392) rotate(-42)"><text class="st">Basilica San Paolo</text></g>
+<g transform="translate(341,438) rotate(-42)"><text class="nt hm" text-anchor="end">váš domov</text></g>
+<path d="M1030 184 V396" stroke="#1a1a1a" stroke-width="2.5" stroke-dasharray="7 6" fill="none"/>
+<g transform="translate(1044,290)"><text class="nt" fill="#1a1a1a">prestup, 5 min</text></g>
+<g transform="translate(40,44)"><text class="tm" fill="#e2603a">● LINKA A</text><text class="tm" fill="#2f6fb0" y="26">● LINKA B</text></g>
+</svg>
+
+<div class="box">
+  <span class="bt">Štyri pravidlá, ktoré vám ušetria problémy</span>
+  <p><strong>Smer.</strong> Z domu do centra vždy linka B smer <strong>Rebibbia</strong>, späť vždy smer
+  <strong>Laurentina</strong>. Na vašom úseku sa nedá nastúpiť na zlý vlak — linka B sa vetví (vetva B1
+  na Jonio) až <em>za</em> Termini, takže do centra vás dovezie každý vlak.</p>
+  <p><strong>Prestup.</strong> Na Termini sa medzi linkami prechádza chodbami s modrými (B) a oranžovými
+  (A) šípkami, cca 5 minút. <strong>Prestup je v cene jedného lístka</strong>, pokiaľ nevyjdete cez
+  turniket von.</p>
+  <p><strong>Lístok.</strong> Jednorazový BIT stojí 1,50 € a platí 100 minút na autobus a električku
+  alebo <strong>na jednu jazdu metrom</strong>. Kúpite v automate na stanici, v trafike
+  (<em>tabaccheria</em>) alebo cez appku; v metre sa dá platiť aj bezkontaktnou kartou pri turnikete.
+  Cenník: <a href="https://www.atac.roma.it/biglietti-e-abbonamenti" target="_blank" rel="noopener">atac.roma.it</a></p>
+  <p><strong>Kufre.</strong> Do Kolosea sa s kuframi ani veľkými batohmi nesmie a úschovňa tam nie je.</p>
+</div>
+
+<h2>Ceny lístkov v Ríme</h2>
+<div class="tw"><table>
+<tr><th>Lístok</th><th>Platnosť</th><th style="text-align:right">Cena</th></tr>
+<tr><td>BIT — jednorazový</td><td>100 minút na povrchu, alebo jedna jazda metrom</td><td class="num">1,50 €</td></tr>
+<tr><td>Roma 24H</td><td>24 hodín od označenia</td><td class="num">8,50 €</td></tr>
+<tr><td>Roma 48H</td><td>48 hodín</td><td class="num">15,00 €</td></tr>
+<tr><td>Roma 72H</td><td>72 hodín</td><td class="num">22,00 €</td></tr>
+<tr><td>Vlak FL1 z letiska</td><td>jedna cesta do Ríma, 90 minút od označenia</td><td class="num">8,00 €</td></tr>
+</table></div>
+<p>Pri tomto programe vychádzajú <strong>lacnejšie jednotlivé lístky BIT</strong> než denný — denný sa
+oplatí až od šiestej jazdy denne.</p>
+
+<h2>Rozpočet na dopravu a vstupy</h2>
+<div class="tw"><table>
+<tr><th>Položka</th><th style="text-align:right">Na osobu</th><th style="text-align:right">2 osoby</th></tr>
+<tr><td>MHD Košice na letisko + batožina (tam)</td><td class="num">2,60 €</td><td class="num">5,20 €</td></tr>
+<tr><td>MHD Košice z letiska + batožina (späť)</td><td class="num">2,60 €</td><td class="num">5,20 €</td></tr>
+<tr><td>Vlak FL1 z Fiumicina + metro (príchod)</td><td class="num">9,50 €</td><td class="num">19,00 €</td></tr>
+<tr><td>Metro v Ríme počas dvoch dní (cca 8 × BIT)</td><td class="num">12,00 €</td><td class="num">24,00 €</td></tr>
+<tr><td>Nočný návrat na letisko — možnosť A</td><td class="num">6,50–10,50 €</td><td class="num">13,00–21,00 €</td></tr>
+<tr><td>Koloseum + Fórum + Palatín <em>— zaplatené</em></td><td class="num">18,00 €</td><td class="num">36,00 €</td></tr>
+<tr><td>Vatikánske múzeá <em>— zaplatené</em></td><td class="num">25,50 €</td><td class="num">51,00 €</td></tr>
+<tr><td>Panteón (nepovinné)</td><td class="num">7,00 €</td><td class="num">14,00 €</td></tr>
+<tr><td>Fontána di Trevi — plošina (nepovinné)</td><td class="num">2,00 €</td><td class="num">4,00 €</td></tr>
+<tr class="tot"><td>Spolu bez jedla a ubytovania</td><td class="num">85,70–89,70 €</td><td class="num">171,40–179,40 €</td></tr>
+</table></div>
+<p>Z toho je už <strong>43,50 € na osobu zaplatených</strong> (vstupenky, spolu 87 € za oboch).
+Piazza del Popolo, Španielske schody, Piazza Navona, pohľad na Trevi z námestia, bazilika sv. Petra
+aj bazilika sv. Pavla sú zadarmo.</p>
+
+<h2>Čo ešte zariadiť</h2>
+<ul class="check">
+  <li><strong>Panteón</strong> na nedeľu večer, ak ho chcete zvnútra — <a href="https://www.museiitaliani.it/" target="_blank" rel="noopener">museiitaliani.it</a>, 7 € na osobu,
+    rezervácia povinná.</li>
+  <li><strong>Overiť nočné spoje na letisko</strong> na <a href="https://www.tambus.it/en/rome-fiumicino/" target="_blank" rel="noopener">tambus.it</a> a <a href="https://cotralspa.it/titoli-di-viaggio/" target="_blank" rel="noopener">cotralspa.it</a>, ideálne kúpiť lístok TAM
+    online vopred.</li>
+  <li><strong>Taxík na noc z 24. na 25. 8.</strong>, ak idete možnosťou B — objednať deň vopred
+    na <a href="tel:+390663570">+39 06 3570</a>.</li>
+  <li><strong>Online check-in Wizz Air</strong> na oba lety, na spiatočný najneskôr v pondelok večer.
+    Palubné lístky do telefónu <em>aj</em> na papier.</li>
+  <li><strong>Vytlačiť vstupenky</strong> do Kolosea a do Vatikánu — telefón sa môže vybiť a vatikánsky
+    lístok je nevratný.</li>
+  <li><strong>Občianske preukazy</strong> pri sebe aj počas dňa — do Kolosea sa bez dokladu nedostanete,
+    lístky sú na meno.</li>
+  <li><strong>Dva lístky BIT do zásoby</strong> kúpiť v pondelok cez deň, na nočný autobus v utorok.</li>
+  <li><strong>Overiť spoje MHD 23</strong> deň pred cestou: <a href="https://imhd.sk/ke/linka/23" target="_blank" rel="noopener">imhd.sk – linka 23</a></li>
+  <li><strong>Európsky preukaz zdravotného poistenia</strong> so sebou. Do Talianska stačí platný
+    občiansky preukaz.</li>
+  <li><strong>Adresu ubytovania vytlačenú:</strong> Pop Domus, <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=Via%20Ostiense%20363%2C%2000146%20Roma" target="_blank" rel="noopener">Via Ostiense 363</a>, 00146 Roma, aj s telefónom
+    na ubytovateľa.</li>
+</ul>
+
+<h2>Dobré vedieť</h2>
+<p><strong>Horúčava.</strong> Koniec augusta v Ríme býva okolo 32 °C. Vyrážať skoro ráno, medzi 13:00
+a 16:30 pauza. Fľašu na vodu si noste — po meste sú verejné pitné fontánky <em>nasoni</em> s pitnou
+vodou zadarmo, aj priamo pri pamiatkach.</p>
+
+<p><strong>Označovanie lístkov.</strong> Vlakový lístok FL1 sa označuje v zelenom stĺpiku <em>pred</em>
+nástupom. Papierový mestský lístok v malom automate hneď po nastúpení do autobusu. V metre stačí
+priložiť lístok k turniketu. Pokuty sú vysoké a kontroly bežné.</p>
+
+<p><strong>Vreckári.</strong> Najviac ich je v metre A a B, na Termini, pri Fontáne di Trevi, na
+Španielskych schodoch a v rade pred Koloseom. Peniaze a doklady vpredu, nie v zadnom vrecku, batoh
+v dave dopredu na brucho.</p>
+
+<p><strong>Oblečenie do kostolov a múzeí.</strong> V bazilike sv. Petra, vo Vatikánskych múzeách aj
+v bazilike sv. Pavla platí zákaz odhalených ramien a krátkych nohavíc nad kolená, pre mužov aj ženy.
+Ľahká šatka alebo košeľa v batohu problém vyrieši.</p>
+
+<p><strong>Taxíky.</strong> Len biele, s taxametrom a evidenčným číslom na dverách. Nikdy neberte
+niekoho, kto vás osloví v hale letiska alebo na stanici. Radiotaxi 3570: <a href="tel:+390663570">+39 06 3570</a></p>
+
+<p><strong>Štrajky.</strong> V Taliansku sú štrajky v doprave bežné a ohlasujú sa väčšinou 10–20 dní
+vopred. Na 22.–25. augusta zatiaľ nie je v Ríme ohlásený žiadny, ale okolo 15. augusta sa oplatí
+pozrieť na <a href="https://scioperi.mit.gov.it/mit2/public/scioperi" target="_blank" rel="noopener">scioperi.mit.gov.it</a>.</p>
+
+<p><strong>Ak sa niečo pokazí.</strong> Tiesňové číslo <a href="tel:112">112</a> funguje v Taliansku aj
+na Slovensku. Veľvyslanectvo SR v Ríme: Via dei Colli della Farnesina 144.</p>
+
+<div class="box ok">
+  <span class="bt">Ak zostane čas navyše</span>
+  <p><strong><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=Centrale%20Montemartini%2C%20Via%20Ostiense%20106%2C%20Roma" target="_blank" rel="noopener">Centrale Montemartini</a></strong> —
+  antické sochy vystavené v starej elektrárni medzi turbínami. Na tej istej ulici ako ubytovanie, dve
+  zastávky metrom smerom <span class="dir">Rebibbia</span>, výstup Garbatella alebo Piramide, a takmer
+  bez turistov.</p>
+  <p><strong><a class="maplink" href="https://www.google.com/maps/search/?api=1&query=Circo%20Massimo%2C%20Roma" target="_blank" rel="noopener">Circo Massimo</a></strong> — jedna zastávka pred Koloseom,
+  obrovský priestor antického dostihového štadióna, voľne prístupný a zadarmo.</p>
+</div>
+
+<h2>Odkiaľ sú informácie</h2>
+<p style="font-size:15px">
+<a href="https://colosseo.it/orari-e-biglietti/" target="_blank" rel="noopener">colosseo.it</a> · <a href="https://www.museivaticani.va/" target="_blank" rel="noopener">museivaticani.va</a> · <a href="https://www.basilicasanpietro.va/" target="_blank" rel="noopener">basilicasanpietro.va</a> · <a href="https://basilicasanpaolo.org/orari/" target="_blank" rel="noopener">basilicasanpaolo.org</a> · <a href="https://fontanaditrevi.roma.it/" target="_blank" rel="noopener">fontanaditrevi.roma.it</a> · <a href="https://direzionemuseiroma.cultura.gov.it/en/pantheon/" target="_blank" rel="noopener">oficiálna stránka Panteónu</a> ·
+<a href="https://direzionemuseiroma.cultura.gov.it/en/museo-nazionale-di-castel-santangelo/" target="_blank" rel="noopener">Castel Sant'Angelo</a> ·
+<a href="https://www.atac.roma.it/biglietti-e-abbonamenti" target="_blank" rel="noopener">atac.roma.it</a> · <a href="https://romamobilita.it/muoversi-a-roma/linee-e-orari-di-metro-e-ferrovie/" target="_blank" rel="noopener">romamobilita.it</a> · <a href="https://www.adr.it/web/aeroporti-di-roma-en/pax-fco-train" target="_blank" rel="noopener">adr.it – vlaky</a> · <a href="https://www.adr.it/web/aeroporti-di-roma-en/pax-fco-taxi" target="_blank" rel="noopener">adr.it – taxi</a> · <a href="https://cotralspa.it/titoli-di-viaggio/" target="_blank" rel="noopener">cotralspa.it</a> · <a href="https://www.tambus.it/en/rome-fiumicino/" target="_blank" rel="noopener">tambus.it</a> · <a href="https://www.wizzair.com/en-gb/help-centre/check-in-and-boarding/check-in/check-in-and-baggage-drop-off-times" target="_blank" rel="noopener">pravidlá Wizz Air</a> · <a href="https://imhd.sk/ke/linka/23" target="_blank" rel="noopener">imhd.sk – linka 23</a> · <a href="https://www.dpmk.sk/cp/linka/40023" target="_blank" rel="noopener">dpmk.sk</a>
+</p>
+
+<div class="pager"><a href="utorok.html">← Ut · 25. 8.</a><span></span></div>
+</main>
+<footer>
+  <p>Zostavené 17. augusta 2026 podľa zakúpených vstupeniek. Otváracie hodiny overené na oficiálnych
+  stránkach pamiatok, odchody MHD z cestovného poriadku DPMK platného od 1. 7. 2026, časy odbavenia
+  z pravidiel Wizz Air pre letisko Fiumicino. Nočné odchody autobusov na letisko si pár dní pred cestou
+  potvrďte — sú to jediné údaje, ktoré sa nedali overiť z oficiálneho zdroja.</p>
+  <a class="toplink" href="#">↑ Hore</a>
+</footer>
+</body>
+</html>
